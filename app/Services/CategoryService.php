@@ -1,19 +1,14 @@
 <?php
 
 namespace App\Services;
-
+use Illuminate\Support\Str;
 use App\Models\Category;
 
 class CategoryService
 {
-    public function all()
-    {
-        return Category::withTrashed()->latest()->get();
-    }
-
     public function paginated($perPage = 10)
     {
-        return Category::withTrashed()->latest()->paginate($perPage);
+        return Category::withoutTrashed()->latest()->paginate($perPage);
     }
 
     public function create(array $data)
@@ -28,12 +23,12 @@ class CategoryService
 
     public function delete(Category $category)
     {
-        return $category->delete();
+        return $category->delete(); 
     }
 
-    public function restore(int $id)
+    public function restore($id)
     {
-        $category = Category::onlyTrashed()->findOrFail($id);
+        $category = Category::withTrashed()->findOrFail($id);
         return $category->restore();
     }
 }

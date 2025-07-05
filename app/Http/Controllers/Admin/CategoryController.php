@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Routing\Controller as BaseController;
@@ -20,12 +19,12 @@ class CategoryController extends BaseController
     public function index()
     {
         $categories = $this->categoryService->paginated();
-        return view('admin.categories.index', compact('categories'));
+        return view('admin.auth.Category.index', compact('categories'));
     }
 
     public function create()
     {
-        return view('admin.categories.create');
+        return view('admin.auth.Category.create');
     }
 
     public function store(Request $request)
@@ -37,12 +36,12 @@ class CategoryController extends BaseController
 
         $this->categoryService->create($request->only('name', 'description'));
 
-        return redirect()->route('admin.categories.index')->with('success', 'Category created successfully!');
+        return redirect()->route('admin.category.index')->with('success', 'Category created successfully!');
     }
 
     public function edit(Category $category)
     {
-        return view('admin.categories.edit', compact('category'));
+        return view('admin.auth.category.edit', compact('category'));
     }
 
     public function update(Request $request, Category $category)
@@ -51,21 +50,21 @@ class CategoryController extends BaseController
             'name' => 'required|string|unique:categories,name,' . $category->id,
             'description' => 'nullable|string',
         ]);
-
+        
         $this->categoryService->update($category, $request->only('name', 'description'));
 
-        return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully!');
+        return redirect()->route('admin.category.index')->with('success', 'Category updated successfully!');
     }
 
     public function destroy(Category $category)
     {
         $this->categoryService->delete($category);
-        return redirect()->route('admin.categories.index')->with('success', 'Category deleted (soft) successfully!');
+        return redirect()->route('admin.category.index')->with('success', 'Category deleted (soft) successfully!');
     }
 
     public function restore($id)
     {
         $this->categoryService->restore($id);
-        return redirect()->route('admin.categories.index')->with('success', 'Category restored!');
+        return redirect()->route('admin.category.index')->with('success', 'Category restored!');
     }
 }

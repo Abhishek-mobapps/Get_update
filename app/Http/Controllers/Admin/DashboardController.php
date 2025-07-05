@@ -12,16 +12,16 @@ class DashboardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin');
+        // $this->middleware('auth:admin');
     }
 
     public function index()
     {   
-        if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('admin.dashboard'));
-        }
+        // if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
+        //     $request->session()->regenerate();
+        //     return redirect()->intended(route('admin.dashboard'));
+        // }
 
-        return back()->withErrors(['email' => 'Invalid credentials'])->onlyInput('email');
+        return view('admin.auth.dashboard');
     }
 }

@@ -625,7 +625,7 @@
 						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							{{-- <img src="{{asset('assets/images/avatars/avatar-2.png')}}" class="user-img" alt="user avatar"> --}}
 							<div class="user-info">
-								<p class="user-name mb-0"><a href="{{route('user')}}">{{ Auth::guard('admin')->user()?->name ?? 'GUEST' }}</a></p>
+								<p class="user-name mb-0"><a href="#">{{ Auth::guard('admin')->user()?->name ?? 'GUEST' }}</a></p>
 								<p class="designattion mb-0"><a href="{{route('admin.logout')}}">Logout</a></p>
 							</div>
 						</a>
@@ -692,7 +692,7 @@
 				</li>
 				<li class="menu-label"></li>
 				<li>
-					<a href="widgets.html">
+					<a href="{{route('admin.category.index')}}">
                 <div class="parent-icon ">
                <i class='bx bx-crown'></i>
                </div>
@@ -701,21 +701,21 @@
 
 				</li>
                 <li>
-					<a href="{{route('category')}}">
+					<a href="#">
 						<div class="parent-icon"><i class='bx bx-cookie'></i>
 						</div>
 						<div class="menu-title fw-bold">Type</div>
 					</a>
 				</li>
                 <li>
-					<a href="widgets.html">
+					<a href="#">
 						<div class="parent-icon"><i class='bx bx-repeat'></i>
 						</div>
 						<div class="menu-title fw-bold">Operation States</div>
 					</a>
 				</li>
                 <li>
-					<a href="{{route('products')}}">
+					<a href="#">
 						<div class="parent-icon"><i class='bx bx-cart'></i>
 						</div>
 						<div  class="menu-title fw-bold">Product</div>

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class DashboardController extends Controller
+class ProfileController extends Controller
 {
     public function __construct()
     {
@@ -22,8 +22,7 @@ class DashboardController extends Controller
         //     return redirect()->intended(route('admin.dashboard'));
         // }
 
-        return view('admin.auth.main-components.grid-box');
+        return view('admin.auth.main-components.user-profile');
     }
 
-    public func
 }

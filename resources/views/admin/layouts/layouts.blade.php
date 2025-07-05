@@ -1,37 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Bootstrap Layout</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <head>
-	<!-- Required meta tags -->
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--favicon-->
-	<link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
-	<!--plugins-->
-	<link href="{{asset('assets/plugins/notifications/css/lobibox.min.css')}}" rel="stylesheet"/>
-	<link href="{{asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css')}}" rel="stylesheet"/>
-	<link href="{{asset('assets/plugins/simplebar/css/simplebar.css')}}" rel="stylesheet" />
-	<link href="{{asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css')}}" rel="stylesheet" />
-	<link href="{{asset('assets/plugins/metismenu/css/metisMenu.min.css')}}" rel="stylesheet" />
-	<!-- loader-->
-	<link href="{{asset('assets/css/pace.min.css')}}" rel="stylesheet"/>
-	<script src="{{asset('assets/js/pace.min.js')}}"></script>
-	<!-- Bootstrap CSS -->
-	<link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
-	<link href="{{asset('assets/css/bootstrap-extended.css')}}" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
-	<link href="{{asset('assets/css/app.css')}}" rel="stylesheet">
-	<link href="{{asset('assets/css/icons.css')}}" rel="stylesheet">
-	<!-- Theme Style CSS -->
-	<link rel="stylesheet" href="asset('assets/css/dark-theme.css')}}" />
-	<link rel="stylesheet" href="asset('assets/css/semi-dark.css')}}" />
-	<link rel="stylesheet" href="asset('assets/css/header-colors.css')}}" />
-	<title>GED Intermedia - Portal</title>
-</head>
-</head>
 <body class="d-flex flex-column min-vh-100">
   <!-- Header -->
   <div class="bg-light  p-3">
@@ -625,7 +591,7 @@
 						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							{{-- <img src="{{asset('assets/images/avatars/avatar-2.png')}}" class="user-img" alt="user avatar"> --}}
 							<div class="user-info">
-								<p class="user-name mb-0"><a href="{{route('user')}}">{{ Auth::guard('admin')->user()?->name ?? 'GUEST' }}</a></p>
+								<p class="user-name mb-0"><a href="#">{{ Auth::guard('admin')->user()?->name ?? 'GUEST' }}</a></p>
 								<p class="designattion mb-0"><a href="{{route('admin.logout')}}">Logout</a></p>
 							</div>
 						</a>
@@ -659,80 +625,12 @@
   </div>
 
   <aside>
-	  <!-- Main Content with Sidebar -->
-  <div class="flex-grow-1 container-fluid">
-    <div class="row">
-      
-      <!-- Sidebar -->
-      <div class="col-md-3 col-lg-2 bg-body-tertiary border-end p-3" class="bg-light border-end" style="width: 250px;"">
-        <!-- SIDEBAR -->
-        <!--wrapper-->
-	<div class="wrapper">
-		<!--sidebar wrapper -->
-		<div class="sidebar-wrapper" data-simplebar="true">
-			<div class="sidebar-header">
-				<div>
-					<img src="{{ asset('assets/images/ged_logo.jpeg') }}" class="logo-icon" alt="logo icon">
-				</div>
-				<div>
-					<h4 class="logo-text">GED Intermedia</h4>
-				</div>
-				<div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
-				</div>
-			 </div>
-			<!--navigation-->
-			<ul class="metismenu" id="menu">
-				<li>
-					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class='bx bx-home-alt'></i>
-						</div>
-						<div class="menu-title fw-bold">Dashboard</div>
-					</a>
-
-				</li>
-				<li class="menu-label"></li>
-				<li>
-					<a href="widgets.html">
-                <div class="parent-icon ">
-               <i class='bx bx-crown'></i>
-               </div>
-               <div class="menu-title fw-bold ">Category</div>
-               </a>
-
-				</li>
-                <li>
-					<a href="{{route('category')}}">
-						<div class="parent-icon"><i class='bx bx-cookie'></i>
-						</div>
-						<div class="menu-title fw-bold">Type</div>
-					</a>
-				</li>
-                <li>
-					<a href="widgets.html">
-						<div class="parent-icon"><i class='bx bx-repeat'></i>
-						</div>
-						<div class="menu-title fw-bold">Operation States</div>
-					</a>
-				</li>
-                <li>
-					<a href="{{route('products')}}">
-						<div class="parent-icon"><i class='bx bx-cart'></i>
-						</div>
-						<div  class="menu-title fw-bold">Product</div>
-					</a>
-				</li>
-			<!--end navigation-->
-		</div>
-		<!--end sidebar wrapper -->
-      </div>
+	
   </aside>
       
       <!-- Main Content -->
       <main>
-		<div class="flex-grow-1 p-3">
-			@include('admin.auth.main-components.content-box-grid')
-      @yield('content')
-     </div>
+		
 	  </main>
 
 
@@ -742,28 +640,6 @@
   <!-- Footer -->
   <div class="border-top p-3 text-center">
     <footer class="page-footer">
-			<p class="mb-0">Copyright © 2023. All right reserved.</p>
+			
 		</footer>
   </div>
-  
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Bootstrap JS -->
-	<script src=" {{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
-	<!--plugins-->
-	<script src=" {{asset('assets/js/jquery.min.js')}}"></script>
-	<script src=" {{asset('assets/plugins/simplebar/js/simplebar.min.js')}}"></script>
-	<script src=" {{asset('assets/plugins/metismenu/js/metisMenu.min.js')}}"></script>
-	<script src=" {{asset('assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js')}}"></script>
-	<script src=" {{asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
-    <script src=" {{asset('assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
-	<script src=" {{asset('assets/plugins/chartjs/js/chart.js')}}"></script>
-	<script src=" {{asset('assets/plugins/sparkline-charts/jquery.sparkline.min.js')}}"></script>
-	<!--notification js -->
-	<script src=" {{asset('assets/plugins/notifications/js/lobibox.min.js')}}"></script>
-	<script src=" {{asset('assets/plugins/notifications/js/notifications.min.js')}}"></script>
-	<script src=" {{asset('assets/js/index3.js')}}"></script>
-	<!--app JS-->
-	<script src=" {{asset('assets/js/app.js')}}"></script>
-</body>
-</html>

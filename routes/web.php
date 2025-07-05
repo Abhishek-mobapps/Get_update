@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminResetPasswordController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProfileController;
 
     Route::get('/', function () {
     return redirect()->route('admin.login');
@@ -42,6 +43,9 @@ use App\Http\Controllers\Admin\DashboardController;
 
 
         Route::resource('products', ProductController::class);
+      
+        Route::get('/user-profile',[ProfileController::class, 'index'])->name('user-profiles');
+
         Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
         Route::get('/categories/create', [CategoryController::class, 'create'])->name('category.create');
         Route::post('/categories', [CategoryController::class, 'store'])->name('category.store');
@@ -51,5 +55,3 @@ use App\Http\Controllers\Admin\DashboardController;
 
     });
 });
-
-    

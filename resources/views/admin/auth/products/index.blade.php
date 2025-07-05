@@ -1,3 +1,12 @@
+@if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+
+
 {{-- <!DOCTYPE html>
 <html>
 <head><title>Admin Products</title></head>
@@ -1156,11 +1165,14 @@
                                 {{-- <img src="{{ asset('assets/images/avatars/avatar-2.png') }}" class="user-img" alt="admin avatar"> --}}
                                 <div class="user-info">
                                     <p class="user-name mb-0">
-                                        <a href="#">{{ Auth::guard('admin')->user()->name }}</a>
+                                        <a href="#">{{ Auth::guard('admin')->user()?->name ?? 'Guest' }}
+</a>
                                     </p>
-                                    <p class="designattion mb-0">
-                                        {{ Auth::guard('admin')->user()->email }}
-                                    </p>
+
+
+
+
+                                    <p class="designattion mb-0  text-dark"><a href="{{route('admin.logout')}}">Logout</a></p>
                                 </div>
                             </a>
                         @endauth

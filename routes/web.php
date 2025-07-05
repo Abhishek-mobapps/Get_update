@@ -5,17 +5,14 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminForgotPasswordController;
 use App\Http\Controllers\AdminResetPasswordController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\DashboardController;
 
+Route::redirect('/', '/admin/login');
 
-// Route::get('/', function(){
-//     echo "hello";
-// });
-
-Route::get('/', [AdminAuthController::class, 'showRegisterForm'])->name('register');
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
-    // Route::middleware('guest:admin')->group(function () {
+    Route::middleware('guest:admin')->group(function () {
         Route::get('register', [AdminAuthController::class, 'showRegisterForm'])->name('register');
         Route::post('register', [AdminAuthController::class, 'register']);
 
@@ -27,23 +24,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('password/reset/{token}', [AdminResetPasswordController::class, 'showResetForm'])->name('password.reset');
         Route::post('password/reset', [AdminResetPasswordController::class, 'reset'])->name('password.update');
-    // });
+    });
 
-   // Authenticated routes
-    // Route::middleware('auth:admin')->group(function () {
+
+    Route::middleware('auth:admin')->group(function () {
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
+
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('products', ProductController::class);
-        
-    // });
+
+
+        Route::resource('categories', CategoryController::class);
+        Route::get('categories/{id}/restore',
+         [CategoryController::class, 'restore'])->name('categories.restore');
+
+    });
 });
-
-Route::view('/test','admin.layouts.layouts');
-
-
-Route::get('/user', function(){
-    return view('admin.auth.main-components.user-profile');
-})->name('user');
-
-Route::get('/product', function(){
-    return view('admin.auth.main-components.product-menu');
-})->name('products');

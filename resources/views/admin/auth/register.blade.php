@@ -61,6 +61,7 @@
         <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
     </div>
 @endif
+    @include('admin.auth.main-components.flash-alerts')
     <div class="wrapper">
         <div class="d-flex align-items-center justify-content-center my-5">
             <div class="container-fluid">

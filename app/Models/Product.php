@@ -21,4 +21,9 @@ class Product extends Model
         'cost_per_price' => 'decimal:2',
         'star_points' => 'decimal:2',
     ];
+
+
+    public function categories(){
+         return $this->belongsToMany(Category::class);
+    }
 }

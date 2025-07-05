@@ -4,15 +4,7 @@
 <body>
 <h2>Admin Login</h2>
 
-@if(session('success'))
-    <div style="color:green">{{ session('success') }}</div>
-@endif
 
-@if ($errors->any())
-    <div style="color:red">
-        <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-    </div>
-@endif
 
 <form method="POST" action="{{ route('admin.login') }}">
     @csrf
@@ -80,6 +72,17 @@
 										<h5 class="">GED Intermedia</h5>
 										<p class="mb-0">Please log in to your account</p>
 									</div>
+
+                                    @if(session('success'))
+                                    <div style="color:green">{{ session('success') }}</div>
+                                    @endif
+
+                                    @if ($errors->any())
+                                    <div style="color:red">
+                                    <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+                                    </div>
+                                    @endif
+
 									<div class="form-body">
 										<form method="POST" action="{{ route('admin.login')}}" class="row g-3">
 											@csrf

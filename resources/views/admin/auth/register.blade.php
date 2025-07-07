@@ -79,7 +79,7 @@
                                     </div>
                                     <div class="form-body">
                                        
-                                        <form method="POST" action="{{route('admin.register')}}" class="row g-3">
+                                        <form method="POST" action="{{route('admin.register')}}" class="row g-3"  enctype="multipart/form-data">
                                              @csrf
                                            <!-- Centered Logo -->
 {{-- <div class="text-center mb-4">
@@ -139,6 +139,18 @@
         <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-phone'></i></a>
     </div>
 </div>
+
+<div class="col-12">
+    <label for="inputProfileImage" class="form-label">Profile Photo</label>
+    <div class="input-group">
+        <input type="file" name="profile_image" accept="image/*"
+               class="form-control border-end-0" id="inputProfileImage">
+        <span class="input-group-text bg-transparent">
+            <i class='bx bx-upload'></i>
+        </span>
+    </div>
+</div>
+
 
                                             {{-- <div class="col-12">
 												<label for="inputEmailAddress" class="form-label">Email Address</label>

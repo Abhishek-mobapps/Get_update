@@ -52,15 +52,17 @@
         <div class="user-box dropdown px-3">
           <a class="d-flex align-items-center nav-link dropdown-toggle gap-2"
              href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ asset('assets/images/avatars/avatar-2.png') }}" class="user-img rounded-circle" alt="User Avatar" width="40" height="40">
+            <img src="{{ Auth::guard('admin')->user()?->profile_image 
+        ? asset('storage/' . Auth::guard('admin')->user()->profile_image) 
+        : asset('assets/images/avatars/default.png') }}" class="user-img rounded-circle" alt="User Avatar" width="40" height="40">
             <div class="user-info d-none d-md-block">
-              <p class="user-name mb-0 fw-semibold">Pauline Seitz</p>
-              <p class="designation mb-0 text-muted small">Web Designer</p>
+              <p class="user-name mb-0 fw-semibold">{{ Auth::guard('admin')->user()?->name ?? 'Guest' }}</p>
+              <p class="designation mb-0 text-muted small">{{ Auth::guard('admin')->user()?->email ?? 'Guest' }}</p>
             </div>
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-3 p-2">
             <li>
-              <a class="dropdown-item d-flex align-items-center py-2" href="#">
+              <a class="dropdown-item d-flex align-items-center py-2" href="{{route('admin.user-profiles')}}">
                 <i class="bx bx-user fs-5 me-2"></i> <span>Profile</span>
               </a>
             </li>

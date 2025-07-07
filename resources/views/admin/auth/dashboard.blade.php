@@ -1,3 +1,4 @@
+    <title>@yield('title')</title>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
     <!-- Header -->

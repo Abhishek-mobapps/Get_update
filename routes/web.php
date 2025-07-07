@@ -22,7 +22,7 @@ use App\Http\Controllers\Admin\ProfileController;
     // Route::middleware('guest:admin')->group(function () {
         Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('login');
         Route::post('login', [AdminAuthController::class, 'login']);
-
+        Route::post('/admin/update', [AdminController::class, 'update'])->name('update');
         Route::get('register', [AdminAuthController::class, 'showRegisterForm'])->name('register');
         Route::post('register', [AdminAuthController::class, 'register']);
 

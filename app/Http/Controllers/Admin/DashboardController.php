@@ -22,8 +22,6 @@ class DashboardController extends Controller
         //     return redirect()->intended(route('admin.dashboard'));
         // }
 
-        return view('admin.auth.main-components.grid-box');
+        return view('admin.auth.dashboard');
     }
-
-    public func
 }

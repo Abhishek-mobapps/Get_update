@@ -22,6 +22,9 @@
 	<link rel="stylesheet" href="asset('assets/css/dark-theme.css')}}" />
 	<link rel="stylesheet" href="asset('assets/css/semi-dark.css')}}" />
 	<link rel="stylesheet" href="asset('assets/css/header-colors.css')}}" />
+    <title>@section('title')
+		   Category-add
+		   @endsection</title>
 
 <div style="margin-left: 300px;" class="mt-4">
     <div class="card w-50">

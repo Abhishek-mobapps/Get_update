@@ -24,4 +24,9 @@ class DashboardController extends Controller
 
         return view('admin.auth.dashboard');
     }
+
+    public function show(){
+
+        return view ('admin.auth.pages.dashboard');
+    }
 }

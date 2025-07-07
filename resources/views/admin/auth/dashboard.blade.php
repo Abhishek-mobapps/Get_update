@@ -7,8 +7,8 @@
            @include('admin.auth.components.header')
         </div>
     </header>
-
-
+   
+    
     <div class="d-flex flex-grow-1">
         <!-- Sidebar -->
         <aside class="bg-white border-end p-3" style="width: 250px;">

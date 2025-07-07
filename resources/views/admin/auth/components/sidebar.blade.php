@@ -15,16 +15,16 @@
 					<img src="{{ asset('assets/images/ged_logo.jpeg') }}" class="logo-icon" alt="logo icon">
 				</div>
 				<div>
-					<h4 class="logo-text">GED Intermedia</h4>
+					<h3 class="logo-text" style="font-size: 20px" >GED Intermedia</h3>
 				</div>
-				<div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
+				<div class="toggle-icon ms-auto">
 				</div>
 			 </div>
 			<!--navigation-->
 			<ul class="metismenu" id="menu">
 				<li>
-					<a href="{{route('admin.dashboard')}}" class="has-arrow">
-						<div class="parent-icon"><i class='bx bx-home-alt'></i>
+					<a href="{{route('admin.grid')}}" class="">
+						<div class="parent-icon">
 						</div>
 						<div class="menu-title fw-bold">Dashboard</div>
 					</a>
@@ -41,7 +41,7 @@
 
 				</li>
                 <li>
-					<a href="#">
+					<a href="{{route('admin.type')}}">
 						<div class="parent-icon"><i class='bx bx-cookie'></i>
 						</div>
 						<div class="menu-title fw-bold">Type</div>

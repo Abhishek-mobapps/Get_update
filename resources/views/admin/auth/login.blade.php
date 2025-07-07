@@ -22,8 +22,6 @@
 </html> --}}
 <!doctype html>
 <html lang="en">
-
-
 <head>
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
@@ -102,7 +100,7 @@
 													<label class="form-check-label" for="flexSwitchCheckChecked">Remember Me</label>
 												</div>
 											</div>
-											<div class="col-md-6 text-end">	<a href="{{ route('admin.password.request') }}">Forgot Password ?</a>
+											<div class="col-md-6 text-end">	<a href="#">Forgot Password ?</a>
 											</div>
 											<div class="col-12">
 												<div class="d-grid">

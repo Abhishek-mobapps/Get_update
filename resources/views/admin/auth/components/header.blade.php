@@ -67,11 +67,14 @@
               </a>
             </li>
             <li>
-                <button class="dropdown-item d-flex align-items-center py-2 w-100" type="submit">
-                  <i class="bx bx-log-out fs-5 me-2"></i> <span>
-                    <a href="{{route('admin.logout')}}">Logout</a>
-                  </span>
-                </button>
+              <a class="dropdown-item d-flex align-items-center py-2" href="{{route('admin.password.change')}}">
+                <i class="bx bx-user fs-5 me-2"></i> <span>Change Password</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center py-2" href="{{route('admin.logout')}}">
+                <i class="bx bx-user fs-5 me-2"></i> <span>Logout</span>
+              </a>
             </li>
           </ul>
         </div>

@@ -2,66 +2,8 @@
 
 
 @section('content')
-<style>
+<div class="container-fluid px-4">
 
-  .page-content {
-    padding-top: 0 !important;
-  }
-
-  .container > .row:first-child {
-    margin-top: 0 !important;
-  }
-
-  .row.equal-height {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .equal-height > div {
-    display: flex;
-  }
-
-  .card {
-    flex: 1;
-    border-radius: 16px;
-    width: 100%;
-    animation: fadeInUp 0.6s ease both;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .card-body {
-    padding: 2rem !important;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    flex-grow: 1;
-  }
-
-  .card h4 {
-    font-size: 2rem;
-    font-weight: 700;
-  }
-
-  .card p {
-    font-size: 1rem;
-  }
-
-
-
-  @media (max-width: 768px) {
-    .card h4 {
-      font-size: 1.5rem;
-    }
-
-    .card p {
-      font-size: 0.9rem;
-    }
-
-    .card-body {
-      padding: 1.5rem !important;
-    }
-  }
-</style>
 <!-- Large, Equal-Size, Animated Cards -->
 <div class="container px-2">
   <div class="row justify-content-center g-4 equal-height">
@@ -105,5 +47,6 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 @endsection

@@ -1,6 +1,7 @@
 @extends('admin.auth.dashboard')
 
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <div class="container">
         <div class="main-body">
             <div class="row">
@@ -8,10 +9,34 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
-                                <img src="{{ Auth::guard('admin')->user()?->profile_image
-                                    ? asset('storage/' . Auth::guard('admin')->user()->profile_image)
-                                    : asset('assets/images/avatars/default.png') }}"
-                                    alt="Admin" class="rounded-circle p-1 bg-primary" width="110">
+                               <div class="d-flex justify-content-center">
+    <form id="profileImageForm" method="POST" action="{{ route('admin.profile.upload') }}" enctype="multipart/form-data">
+    @csrf
+
+    <div class="d-flex justify-content-center">
+        <div class="position-relative d-inline-block" style="width: 130px; height: 130px;">
+            {{-- Profile Image --}}
+            <img src="{{ Auth::guard('admin')->user()?->profile_image
+                        ? asset('storage/' . Auth::guard('admin')->user()->profile_image)
+                        : asset('assets/images/avatars/default.png') }}"
+                class="rounded-circle border border-3 shadow-sm w-100 h-100 object-fit-cover"
+                alt="Profile">
+
+            {{-- Pencil Icon --}}
+            <label for="profile_image_input"
+                class="btn btn-sm btn-light border shadow position-absolute rounded-circle"
+                style="bottom: 4px; right: 4px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;"
+                title="Change photo">
+                <i class="bi bi-pencil-fill fs-6 text-dark"></i>
+            </label>
+
+            {{-- Hidden File Input --}}
+            <input type="file" name="profile_image" id="profile_image_input" class="d-none" accept="image/*">
+        </div>
+    </div>
+</form>
+
+</div>
                                 <div class="mt-3">
                                     <h4>{{ Auth::guard('admin')->user()?->name ?? 'Guest' }}</h4>
                                     {{-- <p class="text-secondary mb-1">{{ Auth::guard('admin')->user()?->email ?? 'Guest' }}</p> --}}
@@ -152,4 +177,13 @@
             </div>
         </div>
     </div>
+
+	<script>
+    document.getElementById('profile_image_input').addEventListener('change', function () {
+        if (this.files.length > 0) {
+            document.getElementById('profileImageForm').submit();
+        }
+    });
+</script>
+
 @endsection

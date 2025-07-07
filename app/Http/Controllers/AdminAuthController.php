@@ -84,12 +84,13 @@ class AdminAuthController extends Controller
 
     $admin = Auth::guard('admin')->user();
 
+
     $admin->update([
         'name'           => $request->name,
         'email'          => $request->email,
         'contact_number' => $request->contact_number,
     ]);
-
+    Auth::guard('admin')->setUser($admin->fresh());
     return redirect()->back()->with('success', 'Profile updated successfully.');
-    }  
+}
 }

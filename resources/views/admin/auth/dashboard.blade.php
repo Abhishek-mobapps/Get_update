@@ -14,7 +14,7 @@
         <aside class="bg-white border-end p-3" style="width: 250px;">
             @include('admin.auth.components.sidebar') 
         </aside>
-
+    
 
         <!-- Main Content -->
         <main class="flex-grow-1 p-4">

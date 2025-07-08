@@ -53,15 +53,31 @@ use App\Http\Controllers\Admin\TypeController;
         Route::post('/admin/profile/upload', [ProfileController::class, 'uploadImage'])
         ->name('profile.upload');
         
-        Route::resource('type', \App\Http\Controllers\Admin\TypeController::class)->name('type');
-        Route::get('type/restore/{id}', [\App\Http\Controllers\Admin\TypeController::class, 'restore'])->name('type.restore');
+        // Route::resource('type', \App\Http\Controllers\Admin\TypeController::class)->name('type');
+        // Route::get('type/restore/{id}', [\App\Http\Controllers\Admin\TypeController::class, 'restore'])->name('type.restore');
         
-        Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
-        Route::get('/categories/create', [CategoryController::class, 'create'])->name('category.create');
-        Route::post('/categories', [CategoryController::class, 'store'])->name('category.store');
-        Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
-        Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('category.update');
-        Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
+        // Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
+        // Route::get('/categories/create', [CategoryController::class, 'create'])->name('category.create');
+        // Route::post('/categories', [CategoryController::class, 'store'])->name('category.store');
+        // Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
+        // Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('category.update');
+        // Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
     });
+    
+    Route::resource('type', \App\Http\Controllers\Admin\TypeController::class);
+    Route::post('type/{type}/toggle-status', [\App\Http\Controllers\Admin\TypeController::class, 'toggleStatus'])->name('type.toggleStatus');
+    Route::get('type/restore/{id}', [\App\Http\Controllers\Admin\TypeController::class, 'restore'])->name('type.restore');
+
+
+    Route::resource('operation-status', \App\Http\Controllers\Admin\OperationStatusController::class);
+    Route::post('operation-status/{operation_status}/toggle-status', [\App\Http\Controllers\Admin\OperationStatusController::class, 'toggleStatus'])->name('operation-status.toggleStatus');
+
+
+
+});
+Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function () {
+    Route::resource('category', \App\Http\Controllers\Admin\CategoryController::class);
+    Route::post('category/{category}/toggle-status', [\App\Http\Controllers\Admin\CategoryController::class, 'toggleStatus'])->name('category.toggleStatus');
+    Route::get('category/restore/{id}', [\App\Http\Controllers\Admin\CategoryController::class, 'restore'])->name('category.restore');
 });

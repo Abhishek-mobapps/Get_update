@@ -1,141 +1,103 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
-// use App\Http\Controllers\Controller;
-use Illuminate\Routing\Controller as BaseController;
 use App\Models\Product;
-use App\Services\ProductService;
+use App\Models\Type;
+use App\Models\Category;
+use App\Models\OperationStatus;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
+use App\Services\ProductService;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends BaseController
 {
-    protected $productService;
+    protected $service;
 
-    public function __construct(ProductService $productService)
+    public function __construct(ProductService $service)
     {
         $this->middleware('auth:admin');
-        $this->productService = $productService;
+        $this->service = $service;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $query = Product::query();
-
-        if ($search = $request->input('search')) {
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('product_tags', 'like', "%{$search}%");
-            });
-        }
-
-        if ($collection = $request->input('collection')) {
-            $query->where('collection', $collection);
-        }
-
-        if ($price_min = $request->input('price_min')) {
-            $query->where('price', '>=', $price_min);
-        }
-
-        if ($price_max = $request->input('price_max')) {
-            $query->where('price', '<=', $price_max);
-        }
-
-        $allowedSorts = ['price', 'created_at', 'title', 'star_points'];
-        $sort = $request->input('sort');
-        $direction = $request->input('direction', 'asc');
-
-        if (in_array($sort, $allowedSorts)) {
-            $query->orderBy($sort, $direction);
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
-
-        $products = $query->paginate(10)->withQueryString();
-
-        $collections = Product::select('collection')->distinct()->pluck('collection')->filter();
-
-        return view('admin.auth.products.index', compact('products', 'collections'));
+        $products = $this->service->paginated();
+        return view('admin.product.index', compact('products'));
     }
 
     public function create()
     {
-        return view('admin.products.create');
+        return view('admin.product.create', [
+            'categories' => Category::where('status', 'active')->get(),
+            'types' => Type::where('status', 'active')->get(),
+            'statuses' => OperationStatus::where('status', 'active')->get()
+        ]);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'           => 'required|string|max:255',
-            'description'     => 'nullable|string',
-            'images.*'        => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'price'           => 'required|numeric|min:0',
-            'compare_at_price'=> 'nullable|numeric|min:0',
-            'cost_per_price'  => 'nullable|numeric|min:0',
-            'star_points'     => 'nullable|numeric|min:0',
-            'product_type'    => 'nullable|string|max:255',
-            'vendor'          => 'nullable|string|max:255',
-            'collection'      => 'nullable|string|max:255',
-            'product_tags'    => 'nullable|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'price' => 'required|numeric|min:0',
+            'buy_sell' => 'required|in:buy,sell',
+            'category_id' => 'required|exists:categories,id',
+            'type_id' => 'required|exists:types,id',
+            'operation_status_id' => 'required|exists:operation_statuses,id',
         ]);
 
         $imagePaths = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $img) {
-                $path = $img->store('products', 'public');
-                $imagePaths[] = $path;
+                $imagePaths[] = $img->store('products', 'public');
             }
         }
         $validated['images'] = $imagePaths;
 
-        $this->productService->create($validated);
-
-        return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');
+        $this->service->create($validated);
+        return redirect()->route('admin.products.index')->with('success', 'Product created.');
     }
 
     public function edit(Product $product)
     {
-        return view('admin.products.edit', compact('product'));
+        return view('admin.product.edit', [
+            'product' => $product,
+            'categories' => Category::where('status', 'active')->get(),
+            'types' => Type::where('status', 'active')->get(),
+            'statuses' => OperationStatus::where('status', 'active')->get()
+        ]);
     }
 
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'title'           => 'required|string|max:255',
-            'description'     => 'nullable|string',
-            'images.*'        => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'price'           => 'required|numeric|min:0',
-            'compare_at_price'=> 'nullable|numeric|min:0',
-            'cost_per_price'  => 'nullable|numeric|min:0',
-            'star_points'     => 'nullable|numeric|min:0',
-            'product_type'    => 'nullable|string|max:255',
-            'vendor'          => 'nullable|string|max:255',
-            'collection'      => 'nullable|string|max:255',
-            'product_tags'    => 'nullable|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'price' => 'required|numeric|min:0',
+            'buy_sell' => 'required|in:buy,sell',
+            'category_id' => 'required|exists:categories,id',
+            'type_id' => 'required|exists:types,id',
+            'operation_status_id' => 'required|exists:operation_statuses,id',
         ]);
 
         $imagePaths = $product->images ?? [];
-
         if ($request->hasFile('images')) {
-            // Append new images
             foreach ($request->file('images') as $img) {
-                $path = $img->store('products', 'public');
-                $imagePaths[] = $path;
+                $imagePaths[] = $img->store('products', 'public');
             }
         }
-
         $validated['images'] = $imagePaths;
 
-        $this->productService->update($product, $validated);
-
-        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
+        $this->service->update($product, $validated);
+        return redirect()->route('admin.products.index')->with('success', 'Product updated.');
     }
 
     public function destroy(Product $product)
     {
-        $this->productService->delete($product);
-
-        return redirect()->route('admin.products.index')->with('success', 'Product deleted (soft) successfully!');
+        $this->service->delete($product);
+        return back()->with('success', 'Product deleted.');
     }
 }

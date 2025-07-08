@@ -41,7 +41,7 @@
 
 				</li>
                 <li>
-					<a href="{{route('admin.type')}}">
+					<a href="{{route('admin.type.index')}}">
 						<div class="parent-icon"><i class='bx bx-cookie'></i>
 						</div>
 						<div class="menu-title fw-bold">Type</div>

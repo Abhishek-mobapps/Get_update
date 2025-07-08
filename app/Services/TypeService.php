@@ -22,12 +22,18 @@ class TypeService
 
     public function delete(Type $type)
     {
-        return $type->delete(); 
+        return $type->delete();
     }
 
     public function restore($id)
     {
         $type = Type::withTrashed()->findOrFail($id);
         return $type->restore();
+    }
+
+    public function toggleStatus(Type $type)
+    {
+        $type->status = $type->status === 'active' ? 'inactive' : 'active';
+        $type->save();
     }
 }

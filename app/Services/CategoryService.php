@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Services;
-use Illuminate\Support\Str;
+
 use App\Models\Category;
 
 class CategoryService
@@ -23,12 +23,18 @@ class CategoryService
 
     public function delete(Category $category)
     {
-        return $category->delete(); 
+        return $category->delete();
     }
 
     public function restore($id)
     {
         $category = Category::withTrashed()->findOrFail($id);
         return $category->restore();
+    }
+
+    public function toggleStatus(Category $category)
+    {
+        $category->status = $category->status === 'active' ? 'inactive' : 'active';
+        $category->save();
     }
 }

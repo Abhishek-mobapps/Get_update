@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Routing\Controller as BaseController;
 use App\Models\Category;
-use App\Services\CategoryService;
 use Illuminate\Http\Request;
+use App\Services\CategoryService;
+use Illuminate\Routing\Controller as BaseController;
 
 class CategoryController extends BaseController
 {
@@ -29,42 +29,40 @@ class CategoryController extends BaseController
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|unique:categories',
-            'description' => 'nullable|string',
-        ]);
+        $request->validate(['name' => 'required|string|unique:categories']);
 
-        $this->categoryService->create($request->only('name', 'description'));
-
-        return redirect()->route('admin.category.index')->with('success', 'Category created successfully!');
+        $this->categoryService->create($request->only(['name', 'description', 'status']));
+        return redirect()->route('admin.category.index')->with('success', 'Category created.');
     }
 
     public function edit(Category $category)
     {
-        return view('admin.auth.category.edit', compact('category'));
+        return view('admin.auth.Category.edit', compact('category'));
     }
 
     public function update(Request $request, Category $category)
     {
-        $request->validate([
-            'name' => 'required|string|unique:categories,name,' . $category->id,
-            'description' => 'nullable|string',
-        ]);
-        
-        $this->categoryService->update($category, $request->only('name', 'description'));
+        $request->validate(['name' => 'required|string|unique:categories,name,' . $category->id]);
 
-        return redirect()->route('admin.category.index')->with('success', 'Category updated successfully!');
+        $this->categoryService->update($category, $request->only(['name', 'description', 'status']));
+        return redirect()->route('admin.category.index')->with('success', 'Category updated.');
     }
 
     public function destroy(Category $category)
     {
         $this->categoryService->delete($category);
-        return redirect()->route('admin.category.index')->with('success', 'Category deleted (soft) successfully!');
+        return back()->with('success', 'Category deleted.');
     }
 
     public function restore($id)
     {
         $this->categoryService->restore($id);
-        return redirect()->route('admin.category.index')->with('success', 'Category restored!');
+        return back()->with('success', 'Category restored.');
+    }
+
+    public function toggleStatus(Category $category)
+    {
+        $this->categoryService->toggleStatus($category);
+        return back()->with('success', 'Category status updated.');
     }
 }

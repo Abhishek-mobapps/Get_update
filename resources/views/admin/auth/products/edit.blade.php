@@ -11,7 +11,7 @@
     </div>
 @endif
 
-<form method="POST" action="{{ route('admin.products.update', $product) }}" enctype="multipart/form-data">
+{{-- <form method="POST" action="{{ route('admin.products.update', $product) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
@@ -62,4 +62,20 @@
 <p><a href="{{ route('admin.products.index') }}">Back to products</a></p>
 
 </body>
-</html>
+</html> --}}
+@extends('admin.auth.dashboard')
+
+@section('content')
+<div class="container mt-4">
+    <h2>Edit Product</h2>
+
+    <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+
+        @include('admin.products.partials.form', ['product' => $product])
+
+        <button class="btn btn-primary mt-3">Update Product</button>
+    </form>
+</div>
+@endsection

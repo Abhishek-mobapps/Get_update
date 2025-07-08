@@ -1,18 +1,21 @@
 <?php
-
 namespace App\Services;
 
 use App\Models\Product;
-use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {
+    public function paginated($perPage = 10)
+    {
+        return Product::with(['category', 'type', 'operationStatus'])
+            ->latest()->paginate($perPage);
+    }
+
     public function create(array $data)
     {
         if (isset($data['images']) && is_array($data['images'])) {
             $data['images'] = json_encode($data['images']);
         }
-
         return Product::create($data);
     }
 
@@ -21,13 +24,11 @@ class ProductService
         if (isset($data['images']) && is_array($data['images'])) {
             $data['images'] = json_encode($data['images']);
         }
-
-        $product->update($data);
-        return $product;
+        return $product->update($data);
     }
 
     public function delete(Product $product)
     {
-        $product->delete();
+        return $product->delete();
     }
 }

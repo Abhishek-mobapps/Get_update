@@ -15,18 +15,24 @@ class DashboardController extends Controller
         // $this->middleware('auth:admin');
     }
 
-    public function index()
-    {   
-        // if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
-        //     $request->session()->regenerate();
-        //     return redirect()->intended(route('admin.dashboard'));
-        // }
+    // public function index()
+    // {   
+    //     // if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
+    //     //     $request->session()->regenerate();
+    //     //     return redirect()->intended(route('admin.dashboard'));
+    //     // }
 
-        return view('admin.auth.dashboard');
-    }
+    //     return view('admin.auth.dashboard');
+    // }
+    public function index(Request $request)
+   {
+    $showWelcomeBox = session()->pull('just_logged_in', false);
+    return view('admin.auth.pages.dashboard.index', compact('showWelcomeBox'));
+   }
+    
+
 
     public function show(){
-
-        return view ('admin.auth.pages.dashboard');
+        return view('admin.auth.pages.dashboard.index');
     }
 }

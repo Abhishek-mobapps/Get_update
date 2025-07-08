@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->json('images')->nullable();
             $table->decimal('price', 10, 2)->default(0);
             $table->enum('buy_sell', ['buy', 'sell'])->default('sell');
-
+            
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('type_id')->constrained()->onDelete('cascade');
             $table->foreignId('operation_status_id')->constrained()->onDelete('cascade');

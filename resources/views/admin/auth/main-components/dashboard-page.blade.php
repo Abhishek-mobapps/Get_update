@@ -1,5 +1,8 @@
+@extends('admin.auth.dashboard')
 
-<div class="container-fluid px-4 mt-5">
+
+@section('content')
+<div class="container-fluid px-4">
 
 <!-- Large, Equal-Size, Animated Cards -->
 <div class="container px-2">
@@ -46,3 +49,4 @@
   </div>
 </div>
 </div>
+@endsection

@@ -23,7 +23,7 @@
 			<!--navigation-->
 			<ul class="metismenu" id="menu">
 				<li>
-					<a href="{{route('admin.grid')}}" class="">
+					<a href="{{route('admin.dashboard')}}" class="">
 						<div class="parent-icon">
 						</div>
 						<div class="menu-title fw-bold">Dashboard</div>
@@ -48,14 +48,14 @@
 					</a>
 				</li>
                 <li>
-					<a href="#">
+					<a href="{{route('admin.operation-status.index')}}">
 						<div class="parent-icon"><i class='bx bx-repeat'></i>
 						</div>
 						<div class="menu-title fw-bold">Operation States</div>
 					</a>
 				</li>
                 <li>
-					<a href="#">
+					<a href="{{route('admin.products.index')}}">
 						<div class="parent-icon"><i class='bx bx-cart'></i>
 						</div>
 						<div  class="menu-title fw-bold">Product</div>

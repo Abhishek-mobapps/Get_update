@@ -23,16 +23,17 @@ class ProductController extends BaseController
     public function index()
     {
         $products = $this->service->paginated();
-        return view('admin.product.index', compact('products'));
+        return view('admin.auth.pages.product.index', compact('products'));
     }
 
     public function create()
     {
-        return view('admin.product.create', [
-            'categories' => Category::where('status', 'active')->get(),
-            'types' => Type::where('status', 'active')->get(),
-            'statuses' => OperationStatus::where('status', 'active')->get()
-        ]);
+        $categories = Category::where('status', 'active')->get();
+        $types = Type::where('status', 'active')->get();
+        $operationStatuses = OperationStatus::where('status', 'active')->get();
+        return view('admin.auth.pages.product.create',compact('categories','types','operationStatuses'));
+
+    // return view('admin.auth.pages.product.create', compact('categories', 'types', 'operationStatuses'));
     }
 
     public function store(Request $request)

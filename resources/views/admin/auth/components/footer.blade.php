@@ -1,7 +1,7 @@
 <!-- Footer -->
   <div class="border-top p-3 text-center">
     <footer class="page-footer">
-			<p class="mb-0">Copyright © 2023. All right reserved.</p>
+			<p class="mb-0">Copyright © 2025. All right reserved.</p>
 		</footer>
   </div>
 

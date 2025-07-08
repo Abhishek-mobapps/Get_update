@@ -57,6 +57,7 @@
     </select>
 </div>
         <button class="btn btn-primary">Update Type</button>
+         <a href="{{ route('admin.type.index') }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
 @endsection

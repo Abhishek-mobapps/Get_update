@@ -43,7 +43,7 @@ use App\Http\Controllers\Admin\TypeController;
      */
     Route::middleware('auth:admin')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('dashboards', [DashboardController::class, 'show'])->name('grid');
+        // Route::get('dashboard', [DashboardController::class, 'show'])->name('grid');
         Route::get('logout', [AdminAuthController::class, 'logout'])->name('logout');
 
         

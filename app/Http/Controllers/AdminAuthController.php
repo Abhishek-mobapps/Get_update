@@ -59,10 +59,11 @@ class AdminAuthController extends Controller
 
         if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
+            session(['just_logged_in' => true]);
             return redirect()->intended(route('admin.dashboard'));
         }
-
-        return back()->withErrors(['email' => 'Invalid credentials'])->onlyInput('email');
+        
+             return back()->withErrors(['email' => 'Invalid credentials'])->onlyInput('email');
     }
 
     public function logout(Request $request)

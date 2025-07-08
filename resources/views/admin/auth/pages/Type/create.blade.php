@@ -26,10 +26,10 @@
                     <option value="1" {{ old('status', $type->status ?? 1) == 1 ? 'selected' : '' }}>Active</option>
                     <option value="0" {{ old('status', $type->status ?? 1) == 0 ? 'selected' : '' }}>Inactive</option>
                 </select>
-
             </div>
 
             <button class="btn btn-success">Create Type</button>
+            <a href="{{ route('admin.type.index') }}" class="btn btn-secondary">Back</a>
         </form>
     </div>
 @endsection

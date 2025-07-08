@@ -1,4 +1,5 @@
 @extends('admin.auth.dashboard')
+
 @section('content')
 <div class="container mt-4">
     <div class="card">
@@ -6,10 +7,12 @@
             <h6>Category List</h6>
             <a href="{{ route('admin.category.create') }}" class="btn btn-sm btn-success">+ Add</a>
         </div>
+
         <div class="card-body">
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
+
             <table class="table table-hover text-center">
                 <thead class="table-light">
                     <tr>
@@ -24,12 +27,13 @@
                         <tr>
                             <td>{{ $category->name }}</td>
                             <td>
-                                @if($category->status)
-                                    <span class="badge bg-success">Active</span>
-                                @else
-                                    <span class="badge bg-secondary">Inactive</span>
-                                @endif
-                            </td>
+                        <form method="POST" action="{{ route('admin.category.toggleStatus', $category) }}">
+                            @csrf
+                            <button type="submit" class="btn btn-sm {{ $category->status == 'active' ? 'btn-success' : 'btn-secondary' }}">
+                                {{ ucfirst($category->status) }}
+                            </button>
+                        </form>
+                          </td>
                             <td>{{ $category->created_at->format('d M Y') }}</td>
                             <td>
                                 <a href="{{ route('admin.category.edit', $category) }}" class="btn btn-sm btn-primary">Edit</a>
@@ -44,6 +48,7 @@
                     @endforelse
                 </tbody>
             </table>
+
             {{ $categories->links() }}
         </div>
     </div>

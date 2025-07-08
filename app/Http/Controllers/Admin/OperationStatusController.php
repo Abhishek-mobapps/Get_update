@@ -19,12 +19,12 @@ class OperationStatusController extends BaseController
     public function index()
     {
         $statuses = $this->service->paginated();
-        return view('admin.operation_status.index', compact('statuses'));
+        return view('admin.auth.pages.Operation_Status.index', compact('statuses'));
     }
 
     public function create()
     {
-        return view('admin.operation_status.create');
+        return view('admin.auth.pages.Operation_Status.create');
     }
 
     public function store(Request $request)
@@ -32,12 +32,12 @@ class OperationStatusController extends BaseController
         $request->validate(['name' => 'required|unique:operation_statuses']);
 
         $this->service->create($request->only(['name', 'status']));
-        return redirect()->route('admin.operation-status.index')->with('success', 'Operation status created.');
+        return redirect()->route('admin.auth.pages.operation-status.index')->with('success', 'Operation status created.');
     }
 
     public function edit(OperationStatus $operation_status)
     {
-        return view('admin.operation_status.edit', ['status' => $operation_status]);
+        return view('admin.auth.pages.operation_status.edit', ['status' => $operation_status]);
     }
 
     public function update(Request $request, OperationStatus $operation_status)

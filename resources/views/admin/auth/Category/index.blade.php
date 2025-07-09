@@ -7,11 +7,26 @@
             <h6>Category List</h6>
             <a href="{{ route('admin.category.create') }}" class="btn btn-sm btn-success">+ Add</a>
         </div>
-
         <div class="card-body">
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
+                        @if(session('success'))
+    <div id="flash-message" class="alert alert-success" role="alert">
+        {{ session('success') }}
+    </div>
+
+    <script>
+        // Auto-fade after 3 seconds
+        setTimeout(() => {
+            let alert = document.getElementById('flash-message');
+            if (alert) {
+                alert.style.transition = "opacity 0.5s ease-out";
+                alert.style.opacity = "0";
+
+                // Remove completely after fade
+                setTimeout(() => alert.remove(), 500);
+            }
+        }, 3000); // 3 seconds
+    </script>
+@endif
 
             <table class="table table-hover text-center">
                 <thead class="table-light">
@@ -23,6 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     @forelse ($categories as $category)
                         <tr>
                             <td>{{ $category->name }}</td>
@@ -49,7 +65,9 @@
                 </tbody>
             </table>
 
-            {{ $categories->links() }}
+            <div class="d-flex justify-content-center mt-4">
+    {{ $categories->links('pagination::bootstrap-5') }}
+</div>
         </div>
     </div>
 </div>

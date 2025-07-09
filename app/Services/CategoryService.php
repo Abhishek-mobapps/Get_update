@@ -6,7 +6,7 @@ use App\Models\Category;
 
 class CategoryService
 {
-    public function paginated($perPage = 10)
+    public function paginated($perPage = 7)
     {
         return Category::withoutTrashed()->latest()->paginate($perPage);
     }

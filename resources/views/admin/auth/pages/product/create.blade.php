@@ -1,4 +1,4 @@
-@extends('admin.layouts.master')
+@extends('admin.auth.dashboard')
 
 @section('content')
 <div class="container mt-4">
@@ -52,6 +52,13 @@
             <input type="number" name="price" class="form-control" required>
         </div>
 
+         <div class="mb-3">
+            <label id="description" for="description" class="form-label">Description</label>
+            <textarea rows="4" cols="50" class="form-control" required>
+
+            </textarea>
+        </div>
+
         <div class="mb-3">
             <label for="images" class="form-label">Upload Images</label>
             <input type="file" name="images[]" class="form-control" multiple>
@@ -59,5 +66,16 @@
 
         <button type="submit" class="btn btn-primary">Create Product</button>
     </form>
+   <script src="https://cdn.ckeditor.com/4.25.1/lts/standard/ckeditor.js"></script>
+<script>
+  CKEDITOR.replace('description');
+</script>
+
 </div>
+@push('scripts')
+<script src="https://cdn.ckeditor.com/4.25.1/lts/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('description');
+</script>
+@endpush
 @endsection

@@ -5,12 +5,12 @@ use App\Models\Product;
 
 class ProductService
 {
-    public function paginated($perPage = 10)
+    public function paginated($perPage = 7)
     {
         return Product::with(['category', 'type', 'operationStatus'])
-            ->latest()->paginate($perPage);
+                     ->latest()
+                     ->paginate($perPage);
     }
-
     public function create(array $data)
     {
         if (isset($data['images']) && is_array($data['images'])) {

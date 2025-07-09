@@ -26,13 +26,16 @@ class DashboardController extends Controller
     // }
     public function index(Request $request)
    {
-    $showWelcomeBox = session()->pull('just_logged_in', false);
+    $showWelcomeBox = session()->pull('just_logged_in', true);
     return view('admin.auth.pages.dashboard.index', compact('showWelcomeBox'));
    }
     
 
 
-    public function show(){
-        return view('admin.auth.pages.dashboard.index');
+    public function showBox()
+    {
+    session()->put('show_dashboard_box', true);
+    return redirect()->route('admin.dashboard');
     }
+
 }

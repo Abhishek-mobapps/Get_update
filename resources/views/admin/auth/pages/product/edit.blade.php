@@ -59,20 +59,29 @@
 
         <div class="mb-3">
             <label>Upload New Images</label>
-            <input type="file" name="images[]" class="form-control" multiple>
+            <input type="file" name="images[]" class="form-control" multiple accept="image/*">
         </div>
 
-        @if($product->images)
+        {{-- Safely decode JSON string if needed --}}
+        @php
+            $images = is_array($product->images) ? $product->images : json_decode($product->images, true);
+        @endphp
+
+        @if(!empty($images) && is_array($images))
         <div class="mb-3">
             <label>Existing Images:</label><br>
-            @foreach($product->images as $img)
-                <img src="{{ asset('storage/'.$img) }}" width="60" class="me-2 mb-2" height="60" style="object-fit: cover;">
+            @foreach($images as $img)
+                @if(file_exists(public_path('storage/' . $img)))
+                    <img src="{{ asset('storage/' . $img) }}" width="60" height="60" class="me-2 mb-2 rounded" style="object-fit: cover;">
+                @else
+                    <span class="text-muted d-block">Missing: {{ $img }}</span>
+                @endif
             @endforeach
         </div>
         @endif
 
         <button class="btn btn-success">Update</button>
-        <a href="{{ route('products.index') }}" class="btn btn-secondary">Back</a>
+        <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
 @endsection

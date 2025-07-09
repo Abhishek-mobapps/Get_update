@@ -1,6 +1,7 @@
 @extends('admin.auth.dashboard')
 
 @section('content')
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <div class="container">
         <div class="main-body">
@@ -12,6 +13,11 @@
                                <div class="d-flex justify-content-center">
     <form id="profileImageForm" method="POST" action="{{ route('admin.profile.upload') }}" enctype="multipart/form-data">
     @csrf
+    @if ($errors->has('profile_image'))
+    <div class="text-danger mt-2">
+        {{ $errors->first('profile_image') }}
+    </div>
+    @endif
 
     <div class="d-flex justify-content-center">
         <div class="position-relative d-inline-block" style="width: 130px; height: 130px;">
@@ -180,10 +186,18 @@
 
 	<script>
     document.getElementById('profile_image_input').addEventListener('change', function () {
-        if (this.files.length > 0) {
-            document.getElementById('profileImageForm').submit();
-        }
-    });
+    const file = this.files[0];
+    if (!file) return;
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+        alert('Please upload a valid image file (jpg, png, webp, gif).');
+        return;
+    }
+
+    document.getElementById('profileImageForm').submit();
+});
+
 </script>
 
 @endsection

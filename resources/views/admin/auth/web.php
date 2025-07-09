@@ -20,7 +20,7 @@ use App\Http\Controllers\Admin\TypeController;
      * ========== Guest Routes ==========
      * Accessible only when not logged in as admin
      */
-    //  Route::middleware('guest:admin')->group(function () {
+    // Route::middleware('guest:admin')->group(function () {
         Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('login');
         Route::post('login', [AdminAuthController::class, 'login']);
         Route::post('/admin/update', [AdminAuthController::class, 'update'])->name('update');
@@ -85,9 +85,9 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
 });
 
 
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/user-products', [UserProductController::class, 'index'])->name('user.products.index');
-//     Route::get('/user-profile', [UserController::class, 'profile'])->name('user.profile');
-//     Route::post('/products/{product}/save', [UserProductController::class, 'save'])->name('user.products.save');
-//     Route::post('/products/{product}/request', [UserProductController::class, 'requestInfo'])->name('user.products.request');
-// });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user-products', [UserProductController::class, 'index'])->name('user.products.index');
+    Route::get('/user-profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::post('/products/{product}/save', [UserProductController::class, 'save'])->name('user.products.save');
+    Route::post('/products/{product}/request', [UserProductController::class, 'requestInfo'])->name('user.products.request');
+});

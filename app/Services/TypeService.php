@@ -5,7 +5,7 @@ use App\Models\Type;
 
 class TypeService
 {
-    public function paginated($perPage = 10)
+    public function paginated($perPage = 7)
     {
         return Type::withoutTrashed()->latest()->paginate($perPage);
     }

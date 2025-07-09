@@ -32,7 +32,7 @@ class OperationStatusController extends BaseController
         $request->validate(['name' => 'required|unique:operation_statuses']);
 
         $this->service->create($request->only(['name', 'status']));
-        return redirect()->route('admin.auth.pages.operation-status.index')->with('success', 'Operation status created.');
+        return redirect()->route('admin.operation-status.index')->with('success', 'Operation status created.');
     }
 
     public function edit(OperationStatus $operation_status)

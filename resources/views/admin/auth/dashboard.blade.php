@@ -31,5 +31,5 @@
           @include('admin.auth.components.footer')
         </div>
     </footer>
-
+    @yield('scripts')
 </body>

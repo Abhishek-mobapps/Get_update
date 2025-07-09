@@ -28,6 +28,10 @@
             @endforeach
         </tbody>
     </table>
-    {{ $categories->links() }}
+    <!-- at the bottom of your product index -->
+<div class="d-flex justify-content-center mt-4">
+    {{ $categories->links('pagination::bootstrap-5') }}
+</div>
+
 </div>
 @endsection

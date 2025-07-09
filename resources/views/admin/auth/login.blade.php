@@ -42,6 +42,17 @@
 	<link href="{{asset('assets/css/app.css')}}" rel="stylesheet">
 	<link href="{{asset('assets/css/icons.css')}}" rel="stylesheet">
 	<title>GED_Admin_Login_Panel</title>
+	<style>
+	body {
+    margin: 0;
+    padding: 0;
+    background-image: url('https://img.freepik.com/free-photo/low-angle-view-skyscrapers_1359-1092.jpg?semt=ais_hybrid&w=740');
+    background-size: cover;        /* Make image cover entire body */
+    background-repeat: no-repeat;  /* Prevent tiling */
+    background-position: center;   /* Center the image */
+    background-attachment: fixed;  /* Optional: keeps background fixed on scroll */
+} </style>
+
 </head>
 
 <body class="">
@@ -111,6 +122,7 @@
 												<div class="text-center ">
 													<p class="mb-0">Don't have an account yet? <a href="{{ route('admin.register') }}">Sign up here</a>
 													</p>
+													
 												</div>
 											</div>
 										</form>

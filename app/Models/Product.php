@@ -13,9 +13,9 @@ class Product extends Model
         'category_id', 'type_id', 'operation_status_id',
     ];
 
-    protected $casts = [
-        'images' => 'array',
-    ];
+    // protected $casts = [
+    //     'images' => 'array',
+    // ];
 
     public function category()
     {

@@ -32,6 +32,7 @@
                 <table class="table table-hover text-center">
                     <thead class="table-light">
                         <tr>
+                            <th>Sr No</th>
                             <th>Name</th>
                             <th>Status</th>
                             <th>Created</th>
@@ -39,28 +40,41 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($types as $type)
+                        @forelse ($types as $index=>$type)
                             <tr>
+                                <td>{{$index+1}}</td>
                                 <td>{{ $type->name }}</td>
                                 <td>
                                     <form method="POST" action="{{ route('admin.type.toggleStatus', $type) }}">
                                         @csrf
                                         <button type="submit"
-                                            class="btn btn-sm {{ $type->status ? 'btn-success' : 'btn-secondary' }}">
-                                            {{ $type->status ? 'Active' : 'Inactive' }}
+                                            class="btn btn-sm {{ $type->status == 'active' ? 'btn-success' : 'btn-secondary' }}">
+                                            {{ ucfirst($type->status) }}
                                         </button>
                                     </form>
                                 </td>
                                 <td>{{ $type->created_at->format('d M Y') }}</td>
-                                <td>
-                                    <a href="{{ route('admin.type.edit', $type->id) }}"
-                                        class="btn btn-sm btn-primary">Edit</a>
-                                    <form action="{{ route('admin.type.destroy', $type->id) }}" method="POST"
-                                        class="d-inline" onsubmit="return confirm('Delete this type?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
+
+                                <td class="text-center align-middle">
+                                    <div class="d-flex justify-content-center align-items-center" style="gap: 10px;">
+                                        <!-- Edit (Bootstrap Icon) -->
+                                        <a href="{{ route('admin.type.edit', $type) }}" title="Edit"
+                                            class="text-primary d-flex align-items-center">
+                                            <i class="bi bi-pencil-square fs-5"></i>
+                                        </a>
+
+                                        <!-- Delete (Bootstrap Icon) -->
+                                        <form action="{{ route('admin.type.destroy', $type) }}" method="POST"
+                                            onsubmit="return confirm('Delete product?')" style="margin: 0;"
+                                            class="d-flex align-items-center">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn p-0 m-0 border-0 bg-transparent text-danger"
+                                                title="Delete">
+                                                <i class="bi bi-trash-fill fs-5"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

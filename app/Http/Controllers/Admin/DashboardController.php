@@ -37,5 +37,6 @@ class DashboardController extends Controller
     session()->put('show_dashboard_box', true);
     return redirect()->route('admin.dashboard');
     }
-
+     
+   
 }

@@ -1,63 +1,35 @@
-{{-- @extends('admin.auth.dashboard')
-
-@section('content')
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
-            <h6>Create Type</h6>
-        </div>
-        <div class="card-body">
-            <form method="POST" action="{{ route('admin.type.store') }}">
-                @csrf
-                <div class="mb-3">
-                    <label>Name</label>
-                    <input type="text" name="name" class="form-control" required>
-                    @error('name') <div class="text-danger small">{{ $message }}</div> @enderror
-                </div>
-                <div class="mb-3">
-                    <label>Status</label>
-                    <select name="status" class="form-select">
-                        <option value="1" selected>Active</option>
-                        <option value="0">Inactive</option>
-                    </select>
-                </div>
-                <button class="btn btn-success">Create</button>
-                <a href="{{ route('admin.type.index') }}" class="btn btn-light">Cancel</a>
-            </form>
-        </div>
-    </div>
-</div>
-@endsection --}}
 @extends('admin.auth.dashboard')
 
 @section('content')
-<div class="container mt-4">
-    <h2>Edit Type</h2>
+<div class="container-fluid mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">Edit Type</div>
+        <div class="card-body">
+            <form action="{{ route('admin.type.update', $type) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-    <form action="{{ route('admin.type.update', $type->id) }}" method="POST">
-        @csrf
-        @method('PUT')
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control form-control-sm" value="{{ old('name', $type->name) }}" required>
+                        @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-select form-select-sm">
+                            <option value="1" {{ $type->status ? 'selected' : '' }}>Active</option>
+                            <option value="0" {{ !$type->status ? 'selected' : '' }}>Inactive</option>
+                        </select>
+                    </div>
+                </div>
 
-        <div class="mb-3">
-            <label>Name</label>
-            <input type="text" name="name" value="{{ old('name', $type->name) }}" class="form-control" required>
-            @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('admin.type.index') }}" class="btn btn-secondary btn-sm">Back</a>
+                    <button type="submit" class="btn btn-success btn-sm">Update</button>
+                </div>
+            </form>
         </div>
-
-        {{-- <div class="mb-3">
-            <label>Description (optional)</label>
-            <textarea name="description" class="form-control">{{ old('description', $type->description) }}</textarea>
-        </div> --}}
-
-        <div class="mb-3">
-    <label>Status</label>
-    <select name="status" class="form-select">
-        <option value="1" {{ old('status', $type->status ?? 1) == 1 ? 'selected' : '' }}>Active</option>
-        <option value="0" {{ old('status', $type->status ?? 1) == 0 ? 'selected' : '' }}>Inactive</option>
-    </select>
-</div>
-        <button class="btn btn-primary">Update Type</button>
-         <a href="{{ route('admin.type.index') }}" class="btn btn-secondary">Back</a>
-    </form>
+    </div>
 </div>
 @endsection

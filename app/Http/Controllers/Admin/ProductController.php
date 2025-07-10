@@ -37,32 +37,28 @@ class ProductController extends BaseController
         return view('admin.auth.pages.product.create', compact('categories', 'types', 'operationStatuses'));
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'price' => 'required|numeric|min:0',
-            'buy_sell' => 'required|in:buy,sell',
-            'category_id' => 'required|exists:categories,id',
-            'type_id' => 'required|exists:types,id',
-            'operation_status_id' => 'required|exists:operation_statuses,id',
-        ]);
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'images' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        'price' => 'required|numeric|min:0',
+        'buy_sell' => 'required|in:buy,sell',
+        'category_id' => 'required|exists:categories,id',
+        'type_id' => 'required|exists:types,id',
+        'operation_status_id' => 'required|exists:operation_statuses,id',
+    ]);
 
-        $imagePaths = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $img) {
-                $imagePaths[] = $img->store('products', 'public');
-            }
-        }
-
-        $validated['images'] = $imagePaths;
-
-        $this->service->create($validated); 
-
-        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
+    if ($request->hasFile('images')) {
+        $validated['images'] = $request->file('images')->store('products', 'public');
     }
+
+    $this->service->create($validated);
+
+    return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
+}
+
 
     public function edit(Product $product)
     {
@@ -78,7 +74,7 @@ class ProductController extends BaseController
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'images' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'price' => 'required|numeric|min:0',
             'buy_sell' => 'required|in:buy,sell',
             'category_id' => 'required|exists:categories,id',
@@ -109,7 +105,7 @@ class ProductController extends BaseController
     }
 
     public function productmenu(Request $request){
-        $products = Product::query()
+         $products = Product::query()
         ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
         ->when($request->type_id, fn($q) => $q->where('type_id', $request->type_id))
         ->when($request->buy_sell, fn($q) => $q->where('buy_sell', $request->buy_sell))
@@ -127,4 +123,6 @@ class ProductController extends BaseController
         'statuses' => OperationStatus::where('status', 'active')->get(),
     ]);
     }
+
+    
 }

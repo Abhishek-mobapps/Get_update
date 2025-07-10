@@ -53,15 +53,14 @@
         </div>
 
          <div class="mb-3">
-            <label id="description" for="description" class="form-label">Description</label>
-            <textarea rows="4" cols="50" class="form-control" required>
-
+            <label for="description" class="form-label">Description</label>
+            <textarea rows="10" cols="50" id="description" name="description" class="form-control" required>
             </textarea>
         </div>
 
         <div class="mb-3">
             <label for="images" class="form-label">Upload Images</label>
-            <input type="file" name="images[]" class="form-control" multiple>
+            <input type="file" name="images" class="form-control" accept="image/*">
         </div>
 
         <button type="submit" class="btn btn-primary">Create Product</button>
@@ -72,10 +71,15 @@
 </script>
 
 </div>
-@push('scripts')
-<script src="https://cdn.ckeditor.com/4.25.1/lts/standard/ckeditor.js"></script>
+<!-- CKEditor 5 CDN -->
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
 <script>
-    CKEDITOR.replace('description');
+    ClassicEditor
+        .create(document.querySelector('#description'))
+        .catch(error => {
+            console.error('CKEditor initialization error:', error);
+        });
 </script>
-@endpush
+
 @endsection

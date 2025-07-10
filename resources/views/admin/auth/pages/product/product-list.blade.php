@@ -62,7 +62,7 @@
                     <p><strong>Op. Status:</strong> {{ $product->operationStatus->name ?? '-' }}</p>
                     <p><strong>Buy/Sell:</strong> {{ ucfirst($product->buy_sell) }}</p>
                     <p><strong>Price:</strong> ₹{{ number_format($product->price, 2) }}</p>
-                    <p><strong>Description:</strong> {{ Str::limit($product->description, 100) }}</p>
+                    <p><strong>Description:</strong> {!! Str::limit($product->description, 100) !!}</p>
                 </div>
                 <div class="card-footer text-center">
                     <a href="#" class="btn btn-outline-primary btn-sm">View Details</a>

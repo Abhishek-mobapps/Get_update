@@ -29,55 +29,67 @@
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
+                    <th>Sr No</th>
                     <th>Image</th>
                     <th>Title</th>
+                    <th>Reference Code</th>
+                    <th>Nation</th>
+                    <th>Region</th>
+                    <th>Sector</th>
+                    <th>System Type</th>
                     <th>Description</th>
                     <th>Category</th>
                     <th>Type</th>
                     <th>Op. Status</th>
                     <th>Buy/Sell</th>
                     <th>Price</th>
+
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($products as $product)
+                @forelse ($products as $index=>$product)
                     <tr>
+                        <td class="text-center">{{$index+1}}</td>
                         <td>
-                            @php
-                                $imagePath =
-                                    is_array($product->images) && isset($product->images[0])
-                                        ? $product->images[0]
-                                        : null;
-                            @endphp
-
-                            @if ($imagePath)
-                                <img src="{{ asset('storage/' . $imagePath) }}" width="50" height="50"
-                                    style="object-fit: cover;" alt="image">
-                            @else
-                                <img src="{{ asset('images/placeholder.png') }}" width="50" height="50"
-                                    style="object-fit: cover;" alt="No Image">
-                            @endif
-                        </td>
-
-
+                            <img src="{{ $product->images ? asset('storage/' . $product->images) : asset('assets/images/no-image.png') }}"
+                                alt="Product Image" width="100" height="100" style="object-fit: cover;">
 
                         </td>
                         <td>{{ $product->title }}</td>
-                        <td>{{$product->description}}</td>
+                        <td>{{ $product->refrence_code }}</td>
+                        <td>{{ $product->naation }}</td>
+                        <td>{{ $product->region }}</td>
+                        <td>{{ $product->sector }}</td>
+                        <td>{{ $product->type_of_system }}</td>
+                        <td>{!! $product->description !!}</td>
                         <td>{{ $product->category->name ?? '-' }}</td>
                         <td>{{ $product->type->name ?? '-' }}</td>
                         <td>{{ $product->operationStatus->name ?? '-' }}</td>
                         <td>{{ ucfirst($product->buy_sell) }}</td>
                         <td>₹{{ $product->price }}</td>
-                        <td class="text-center">
-                            <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-sm btn-info">Edit</a>
-                            <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="d-inline">
-                                @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger"
-                                    onclick="return confirm('Delete product?')">Delete</button>
-                            </form>
+                        <td class="text-center align-middle">
+                            <div class="d-flex justify-content-center align-items-center" style="gap: 10px;">
+                                <!-- Edit (Bootstrap Icon) -->
+                                <a href="{{ route('admin.products.edit', $product) }}" title="Edit"
+                                    class="text-primary d-flex align-items-center">
+                                    <i class="bi bi-pencil-square fs-5"></i>
+                                </a>
+
+                                <!-- Delete (Bootstrap Icon) -->
+                                <form action="{{ route('admin.products.destroy', $product) }}" method="POST"
+                                    onsubmit="return confirm('Delete product?')" style="margin: 0;"
+                                    class="d-flex align-items-center">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn p-0 m-0 border-0 bg-transparent text-danger"
+                                        title="Delete">
+                                        <i class="bi bi-trash-fill fs-5"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
+
                     </tr>
                 @empty
                     <tr>

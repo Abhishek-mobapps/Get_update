@@ -11,11 +11,12 @@ class Product extends Model
     protected $fillable = [
         'title', 'description', 'images', 'price', 'buy_sell',
         'category_id', 'type_id', 'operation_status_id',
+        'reference_code','operation_code','nation','region','sector','type_of_system',
     ];
 
-    protected $casts = [
-        'images' => 'array',
-    ];
+    // protected $casts = [
+    //     'images' => 'array',
+    // ];
 
     public function category()
     {
@@ -30,5 +31,15 @@ class Product extends Model
     public function operationStatus()
     {
         return $this->belongsTo(OperationStatus::class);
+    }
+
+    public function Nation()
+    {
+        return $this->belongsTo(Nation::class);
+    }
+
+    public function Region()
+    {
+        return $this->belongsTo(Region::class);
     }
 }

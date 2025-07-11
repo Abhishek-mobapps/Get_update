@@ -79,6 +79,23 @@
                                 </a>
                             </li>
 
+
+                            <li>
+                                <a href="{{ route('admin.nations.index') }}"
+                                    class="{{ request()->routeIs('admin.nations.index') ? 'active fw-bold' : '' }}">
+                                    <div class="parent-icon"><i class='bx bx-cart'></i></div>
+                                    <div class="menu-title">Nation</div>
+                                </a>
+                            </li>
+
+
+                            <li>
+                                <a href="{{ route('admin.products.index') }}"
+                                    class="{{ request()->routeIs('admin.products.index') ? 'active fw-bold' : '' }}">
+                                    <div class="parent-icon"><i class='bx bx-cart'></i></div>
+                                    <div class="menu-title">Product</div>
+                                </a>
+                            </li>
                         </ul>
                         <!-- End navigation -->
 

@@ -39,6 +39,7 @@
                 <table class="table table-hover text-center">
                     <thead class="table-light">
                         <tr>
+                            <th>Sr No</th>
                             <th>Name</th>
                             <th>Status</th>
                             <th>Created</th>
@@ -46,8 +47,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($statuses as $status)
+                        @forelse($statuses as $index=>$status)
                             <tr>
+                                <td>{{$index+1}}</td>
                                 <td>{{ $status->name }}</td>
                                 <td>
                                     <form method="POST"
@@ -60,14 +62,26 @@
                                     </form>
                                 </td>
                                 <td>{{ $status->created_at->format('d M Y') }}</td>
-                                <td>
-                                    <a href="{{ route('admin.operation-status.edit', $status) }}"
-                                        class="btn btn-sm btn-primary">Edit</a>
-                                    <form action="{{ route('admin.operation-status.destroy', $status) }}" method="POST"
-                                        class="d-inline" onsubmit="return confirm('Delete this?')">
-                                        @csrf @method('DELETE')
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
+                                <td class="text-center align-middle">
+                                    <div class="d-flex justify-content-center align-items-center" style="gap: 10px;">
+                                        <!-- Edit (Bootstrap Icon) -->
+                                        <a href="{{ route('admin.operation-status.edit', $status) }}" title="Edit"
+                                            class="text-primary d-flex align-items-center">
+                                            <i class="bi bi-pencil-square fs-5"></i>
+                                        </a>
+
+                                        <!-- Delete (Bootstrap Icon) -->
+                                        <form action="{{ route('admin.operation-status.destroy', $status) }}" method="POST"
+                                            onsubmit="return confirm('Delete product?')" style="margin: 0;"
+                                            class="d-flex align-items-center">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn p-0 m-0 border-0 bg-transparent text-danger"
+                                                title="Delete">
+                                                <i class="bi bi-trash-fill fs-5"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

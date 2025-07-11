@@ -1,9 +1,13 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use App\Models\OperationStatus;
 use App\Models\Product;
+use App\Models\Nation;
+use App\Models\Sector;
+use App\Models\Region;
 use App\Models\Type;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
@@ -23,43 +27,21 @@ class ProductController extends BaseController
     {
         $products = $this->service->paginated();
         return view('admin.auth.pages.product.index', compact('products'));
-
     }
 
     public function create()
     {
-        $nations = [
-            'Italy', 'France', 'Germany', 'United States', 'India', 'China', 'Brazil',
-        ];
-
-        $regions = [
-            'Lazio', 'Lombardy', 'Tuscany', 'Piedmont', 'Sicily', 'Veneto', 'Sardinia',
-        ];
+        $nations = Nation::get();
+        $regions = Region::get();
+        $sectors = Sector::get();
 
         $categories        = Category::where('status', 'active')->get();
         $types             = Type::where('status', 'active')->get();
         $operationStatuses = OperationStatus::where('status', 'active')->get();
 
-        return view('admin.auth.pages.product.create', compact('categories', 'types', 'operationStatuses','nations','regions'));
+        return view('admin.auth.pages.product.create', compact('categories', 'types', 'operationStatuses', 'nations', 'regions' , 'sectors'));
     }
 
-<<<<<<< HEAD
-public function store(Request $request)
-{
-    $validated = $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'images' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-        'price' => 'required|numeric|min:0',
-        'buy_sell' => 'required|in:buy,sell',
-        'category_id' => 'required|exists:categories,id',
-        'type_id' => 'required|exists:types,id',
-        'operation_status_id' => 'required|exists:operation_statuses,id',
-    ]);
-
-    if ($request->hasFile('images')) {
-        $validated['images'] = $request->file('images')->store('products', 'public');
-=======
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -71,13 +53,9 @@ public function store(Request $request)
             'region'              => 'nullable|string|max:191',
             'sector'              => 'nullable|string|max:191',
             'type_of_system'      => 'nullable|string|max:191',
-            // 'type_of_operation'   => 'nullable|string|max:191',
-            // 'min_value'           => 'nullable|numeric|min:0',
-            // 'max_value'           => 'nullable|numeric|min:0|gte:min_value',
             'buy_sell'            => 'required|in:buy,sell',
-            // 'is_active'           => 'required|boolean',
-            'images'              => 'nullable|string|max:255', // Or use 'array' if storing multiple images as JSON
-            'pdfs'                => 'nullable|string',         // Adjust if you’re handling it as an array
+            'images'              => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'pdfs'                => 'nullable|string',
             'category_id'         => 'required|exists:categories,id',
             'type_id'             => 'required|exists:types,id',
             'operation_status_id' => 'required|exists:operation_statuses,id',
@@ -90,14 +68,7 @@ public function store(Request $request)
         $this->service->create($validated);
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
->>>>>>> 0cdd313 (Nation and Region code)
     }
-
-    $this->service->create($validated);
-
-    return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
-}
-
 
     public function edit(Product $product)
     {
@@ -111,15 +82,6 @@ public function store(Request $request)
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-<<<<<<< HEAD
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'images' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'price' => 'required|numeric|min:0',
-            'buy_sell' => 'required|in:buy,sell',
-            'category_id' => 'required|exists:categories,id',
-            'type_id' => 'required|exists:types,id',
-=======
             'title'               => 'required|string|max:191',
             'description'         => 'nullable|string',
             'reference_code'      => 'nullable|string|max:191',
@@ -128,18 +90,14 @@ public function store(Request $request)
             'region'              => 'nullable|string|max:191',
             'sector'              => 'nullable|string|max:191',
             'type_of_system'      => 'nullable|string|max:191',
-            // 'type_of_operation'   => 'nullable|string|max:191',
-            // 'min_value'           => 'nullable|numeric|min:0',
-            // 'max_value'           => 'nullable|numeric|min:0|gte:min_value',
             'buy_sell'            => 'required|in:buy,sell',
-            // 'is_active'           => 'required|boolean',
-            'images'              => 'nullable|string|max:255', // Or use 'array' if storing multiple images as JSON
-            'pdfs'                => 'nullable|string',         // Adjust if you’re handling it as an array
+            'images'              => 'nullable|array',
+            'pdfs'                => 'nullable|string',
             'category_id'         => 'required|exists:categories,id',
             'type_id'             => 'required|exists:types,id',
->>>>>>> 0cdd313 (Nation and Region code)
             'operation_status_id' => 'required|exists:operation_statuses,id',
         ]);
+
         $imagePaths = is_array($product->images) ? $product->images : json_decode($product->images, true) ?? [];
 
         if ($request->hasFile('images')) {
@@ -148,7 +106,7 @@ public function store(Request $request)
             }
         }
 
-        $validated['images'] = $imagePaths;
+        $validated['images'] = json_encode($imagePaths);
 
         $this->service->update($product, $validated);
 
@@ -160,37 +118,14 @@ public function store(Request $request)
         $this->service->delete($product);
         return back()->with('success', 'Product deleted successfully.');
     }
-<<<<<<< HEAD
 
-    public function productmenu(Request $request){
-         $products = Product::query()
-        ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
-        ->when($request->type_id, fn($q) => $q->where('type_id', $request->type_id))
-        ->when($request->buy_sell, fn($q) => $q->where('buy_sell', $request->buy_sell))
-        ->when($request->operation_status_id, fn($q) => $q->where('operation_status_id', $request->operation_status_id))
-        ->whereHas('category', fn($q) => $q->where('status', 'active'))
-        ->whereHas('type', fn($q) => $q->where('status', 'active'))
-        ->whereHas('operationStatus', fn($q) => $q->where('status', 'active'))
-        ->latest()
-        ->paginate(9);
-
-         return view('admin.auth.pages.product.product-list', [
-        'products' => $products,
-        'categories' => Category::where('status', 'active')->get(),
-        'types' => Type::where('status', 'active')->get(),
-        'statuses' => OperationStatus::where('status', 'active')->get(),
-    ]);
-    }
-
-    
-=======
     public function productmenu(Request $request)
     {
         $products = Product::query()
             ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
             ->when($request->type_id, fn($q) => $q->where('type_id', $request->type_id))
             ->when($request->buy_sell, fn($q) => $q->where('buy_sell', $request->buy_sell))
-            -> when($request->nation, fn($q) => $q->where('nation', $request->nation))
+            ->when($request->nation, fn($q) => $q->where('nation', $request->nation))
             ->when($request->region, fn($q) => $q->where('region', $request->region))
             ->when($request->operation_status_id, fn($q) => $q->where('operation_status_id', $request->operation_status_id))
             ->whereHas('category', fn($q) => $q->where('status', 'active'))
@@ -198,6 +133,7 @@ public function store(Request $request)
             ->whereHas('operationStatus', fn($q) => $q->where('status', 'active'))
             ->latest()
             ->paginate(9);
+
         return view('admin.auth.pages.product.product-list', [
             'products'   => $products,
             'categories' => Category::where('status', 'active')->get(),
@@ -205,6 +141,4 @@ public function store(Request $request)
             'statuses'   => OperationStatus::where('status', 'active')->get(),
         ]);
     }
-
->>>>>>> 0cdd313 (Nation and Region code)
 }

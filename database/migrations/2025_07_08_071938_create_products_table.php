@@ -13,6 +13,7 @@ return new class extends Migration {
 
     $table->string('title'); // e.g. "Property for Sale"
     $table->text('description')->nullable();
+    $table->text('pdfs')->nullable(); // stores JSON array
 
     $table->string('reference_code')->nullable(); // e.g. Ref. 202506060922
     $table->string('operation_code')->nullable(); // e.g. Independent office in Bergamo
@@ -35,20 +36,22 @@ return new class extends Migration {
     $table->boolean('is_active')->default(true); // for state dot (green/active)
 
 
-    $table->json('images')->nullable(); // store multiple image paths
-    $table->json('pdfs')->nullable();   // store multiple pdf paths
+    $table->string('image')->nullable(); // for single image path
+
+    // $table->json('pdfs')->nullable();   // store multiple pdf paths
 
 
     $table->foreignId('category_id')->constrained()->onDelete('cascade');
     $table->foreignId('type_id')->constrained()->onDelete('cascade');
     $table->foreignId('operation_status_id')->constrained()->onDelete('cascade');
 
-<<<<<<< HEAD
-=======
     $table->foreignId('nation_id')->constrained()->onDelete('cascade');
     $table->foreignId('region_id')->constrained()->onDelete('cascade');
 
->>>>>>> 0cdd313 (Nation and Region code)
+    $table->foreignId('sector_id')->constrained()->onDelete('cascade');
+
+
+
     $table->timestamps();
     $table->softDeletes();
 });

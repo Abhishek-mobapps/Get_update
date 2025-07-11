@@ -57,14 +57,6 @@
 
                         </td>
                         <td>{{ $product->title }}</td>
-<<<<<<< HEAD
-=======
-                        <td>{{ $product->refrence_code }}</td>
-                        <td>{{ $product->naation }}</td>
-                        <td>{{ $product->region }}</td>
-                        <td>{{ $product->sector }}</td>
-                        <td>{{ $product->type_of_system }}</td>
->>>>>>> 0cdd313 (Nation and Region code)
                         <td>{!! $product->description !!}</td>
                         <td>{{ $product->category->name ?? '-' }}</td>
                         <td>{{ $product->type->name ?? '-' }}</td>

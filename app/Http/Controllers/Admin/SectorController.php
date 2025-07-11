@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 // use App\Http\Controllers\Controller;
-use App\Models\Region;
+use App\Models\Sector;
 use Illuminate\Http\Request;
-use App\Services\RegionService;
+use App\Services\SectorService;
 use Illuminate\Routing\Controller as BaseController;
 
-class RegionController extends BaseController
+class SectorController extends BaseController
 {
     protected $service;
 
-    public function __construct(RegionService $service)
+    public function __construct(SectorService $service)
     {
         $this->middleware('auth:admin');
         $this->service = $service;
@@ -20,48 +20,48 @@ class RegionController extends BaseController
 
     public function index()
     {
-        return view('admin.auth.pages.regions.index', ['regions' => $this->service->all()]);
+        return view('admin.auth.pages.sectors.index', ['sectors' => $this->service->all()]);
     }
 
     public function create()
     {
-        return view('admin.auth.pages.regions.create');
+        return view('admin.auth.pages.sectors.create');
     }
 
     public function store(Request $request)
     {
         $request->validate(['name' => 'required|string|max:191']);
         $this->service->store($request->all());
-        return redirect()->route('admin.regions.index')->with('success', 'Region created');
+        return redirect()->route('admin.sectors.index')->with('success', 'Sector created');
     }
 
-    public function edit(Region $region)
+    public function edit(Sector $sector)
     {
-        return view('admin.auth.pages.regions.edit', compact('region'));
+        return view('admin.auth.pages.sectors.edit', compact('sector'));
     }
 
-    public function update(Request $request, Region $region)
+    public function update(Request $request, Sector $sector)
     {
         $request->validate(['name' => 'required|string|max:191']);
-        $this->service->update($region, $request->all());
+        $this->service->update($sector, $request->all());
         return redirect()->route('admin.regions.index')->with('success', 'Region updated');
     }
 
-    public function destroy(Region $region)
+    public function destroy(Sector $sector)
     {
-        $this->service->delete($region);
-        return back()->with('success', 'Nation soft deleted');
+        $this->service->delete($sector);
+        return back()->with('success', 'Sector soft deleted');
     }
 
     public function restore($id)
     {
         $this->service->restore($id);
-        return back()->with('success', 'Region restored');
+        return back()->with('success', 'Sector restored');
     }
 
     public function forceDelete($id)
     {
         $this->service->forceDelete($id);
-        return back()->with('success', 'Region permanently deleted');
+        return back()->with('success', 'Sector permanently deleted');
     }
 }

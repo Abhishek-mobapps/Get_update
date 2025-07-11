@@ -42,4 +42,9 @@ class Product extends Model
     {
         return $this->belongsTo(Region::class);
     }
+
+     public function Sector()
+    {
+        return $this->belongsTo(Sector::class);
+    }
 }

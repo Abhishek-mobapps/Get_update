@@ -72,22 +72,28 @@
                             </li>
 
                             <li>
-                                <a href="{{ route('admin.products.index') }}"
-                                    class="{{ request()->routeIs('admin.products.index') ? 'active fw-bold' : '' }}">
-                                    <div class="parent-icon"><i class='bx bx-cart'></i></div>
-                                    <div class="menu-title">Product</div>
-                                </a>
-                            </li>
-
-
-                            <li>
                                 <a href="{{ route('admin.nations.index') }}"
                                     class="{{ request()->routeIs('admin.nations.index') ? 'active fw-bold' : '' }}">
-                                    <div class="parent-icon"><i class='bx bx-cart'></i></div>
+                                    <div class="parent-icon"><i class='bi bi-globe2'></i></div>
                                     <div class="menu-title">Nation</div>
                                 </a>
                             </li>
 
+                            <li>
+                                <a href="{{ route('admin.regions.index') }}"
+                                    class="{{ request()->routeIs('admin.regions.index') ? 'active fw-bold' : '' }}">
+                                    <div class="parent-icon"><i class='bi bi-map'></i></div>
+                                    <div class="menu-title">Region</div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('admin.sectors.index') }}"
+                                    class="{{ request()->routeIs('admin.sectors.index') ? 'active fw-bold' : '' }}">
+                                    <div class="parent-icon"><i class='bi bi-bar-chart'></i></div>
+                                    <div class="menu-title">Sector</div>
+                                </a>
+                            </li>
 
                             <li>
                                 <a href="{{ route('admin.products.index') }}"

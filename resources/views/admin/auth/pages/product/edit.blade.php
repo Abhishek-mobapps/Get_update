@@ -12,6 +12,15 @@
             <label>Title</label>
             <input name="title" class="form-control" required value="{{ old('title', $product->title) }}">
         </div>
+        <div class="mb-3">
+            <label>Reference Code</label>
+            <input name="reference_code" class="form-control" required value="{{ old('title', $product->title) }}">
+        </div>
+
+        <div class="mb-3">
+            <label>Sector</label>
+            <input name="sector" class="form-control" required value="{{ old('title', $product->title) }}">
+        </div>
 
         <div class="mb-3">
             <label>Description</label>
@@ -63,6 +72,12 @@
             </select>
         </div>
 
+<<<<<<< HEAD
+=======
+        
+
+
+>>>>>>> 0cdd313 (Nation and Region code)
         {{-- ✅ Use single image input --}}
         <div class="mb-3">
             <label>Upload New Image</label>

@@ -43,6 +43,12 @@ return new class extends Migration {
     $table->foreignId('type_id')->constrained()->onDelete('cascade');
     $table->foreignId('operation_status_id')->constrained()->onDelete('cascade');
 
+<<<<<<< HEAD
+=======
+    $table->foreignId('nation_id')->constrained()->onDelete('cascade');
+    $table->foreignId('region_id')->constrained()->onDelete('cascade');
+
+>>>>>>> 0cdd313 (Nation and Region code)
     $table->timestamps();
     $table->softDeletes();
 });

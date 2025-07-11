@@ -32,12 +32,18 @@
                     <th>Sr No</th>
                     <th>Image</th>
                     <th>Title</th>
+                    <th>Reference Code</th>
+                    <th>Nation</th>
+                    <th>Region</th>
+                    <th>Sector</th>
+                    <th>System Type</th>
                     <th>Description</th>
                     <th>Category</th>
                     <th>Type</th>
                     <th>Op. Status</th>
                     <th>Buy/Sell</th>
                     <th>Price</th>
+
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -51,6 +57,14 @@
 
                         </td>
                         <td>{{ $product->title }}</td>
+<<<<<<< HEAD
+=======
+                        <td>{{ $product->refrence_code }}</td>
+                        <td>{{ $product->naation }}</td>
+                        <td>{{ $product->region }}</td>
+                        <td>{{ $product->sector }}</td>
+                        <td>{{ $product->type_of_system }}</td>
+>>>>>>> 0cdd313 (Nation and Region code)
                         <td>{!! $product->description !!}</td>
                         <td>{{ $product->category->name ?? '-' }}</td>
                         <td>{{ $product->type->name ?? '-' }}</td>

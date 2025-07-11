@@ -1,100 +1,122 @@
 @extends('admin.auth.dashboard')
 
 @section('content')
-    <div class="container">
-        <h4>Product List</h4>
+<div class="container mt-4">
+    <h4 class="mb-4 text-primary">Product Details</h4>
 
-        <a href="{{ route('admin.products.create') }}" class="btn btn-primary mb-3">Add Product</a>
-        <a href="{{ route('admin.productmenu') }}" class="btn btn-primary mb-3">Product List</a>
-        @if (session('success'))
-            <div id="flash-message" class="alert alert-success" role="alert">
-                {{ session('success') }}
+    <a href="{{ route('admin.products.index') }}" class="btn btn-secondary mb-4">← Back to List</a>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Title:</strong></div>
+                <div class="col-md-9">{{ $products->title }}</div>
             </div>
 
-            <script>
-                // Auto-fade after 3 seconds
-                setTimeout(() => {
-                    let alert = document.getElementById('flash-message');
-                    if (alert) {
-                        alert.style.transition = "opacity 0.5s ease-out";
-                        alert.style.opacity = "0";
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Description:</strong></div>
+                <div class="col-md-9">{!! $products->description !!}</div>
+            </div>
 
-                        // Remove completely after fade
-                        setTimeout(() => alert.remove(), 500);
-                    }
-                }, 3000); // 3 seconds
-            </script>
-        @endif
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Reference Code:</strong></div>
+                <div class="col-md-9">{{ $products->reference_code }}</div>
+            </div>
 
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Sr No</th>
-                    <th>Image</th>
-                    <th>Title</th>
-                    <th>Reference Code</th>
-                    <th>Nation</th>
-                    <th>Region</th>
-                    <th>Sector</th>
-                    <th>System Type</th>
-                    <th>Description</th>
-                    <th>Category</th>
-                    <th>Type</th>
-                    <th>Op. Status</th>
-                    <th>Buy/Sell</th>
-                    <th>Price</th>
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Operation Code:</strong></div>
+                <div class="col-md-9">{{ $products->operation_code }}</div>
+            </div>
 
-                    <th class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($products as $index=>$product)
-                    <tr>
-                        <td class="text-center">{{$index+1}}</td>
-                        <td>
-                            <img src="{{ $product->images ? asset('storage/' . $product->images) : asset('assets/images/no-image.png') }}"
-                                alt="Product Image" width="100" height="100" style="object-fit: cover;">
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Nation:</strong></div>
+                <div class="col-md-9">{{ $products->nation->name ?? '-' }}</div>
+            </div>
 
-                        </td>
-                        <td>{{ $product->title }}</td>
-                        <td>{!! $product->description !!}</td>
-                        <td>{{ $product->category->name ?? '-' }}</td>
-                        <td>{{ $product->type->name ?? '-' }}</td>
-                        <td>{{ $product->operationStatus->name ?? '-' }}</td>
-                        <td>{{ ucfirst($product->buy_sell) }}</td>
-                        <td>₹{{ $product->price }}</td>
-                        <td class="text-center align-middle">
-                            <div class="d-flex justify-content-center align-items-center" style="gap: 10px;">
-                                <!-- Edit (Bootstrap Icon) -->
-                                <a href="{{ route('admin.products.edit', $product) }}" title="Edit"
-                                    class="text-primary d-flex align-items-center">
-                                    <i class="bi bi-pencil-square fs-5"></i>
-                                </a>
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Region:</strong></div>
+                <div class="col-md-9">{{ $products->region->name ?? '-' }}</div>
+            </div>
 
-                                <!-- Delete (Bootstrap Icon) -->
-                                <form action="{{ route('admin.products.destroy', $product) }}" method="POST"
-                                    onsubmit="return confirm('Delete product?')" style="margin: 0;"
-                                    class="d-flex align-items-center">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn p-0 m-0 border-0 bg-transparent text-danger"
-                                        title="Delete">
-                                        <i class="bi bi-trash-fill fs-5"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Category:</strong></div>
+                <div class="col-md-9">{{ $products->category->name ?? '-' }}</div>
+            </div>
 
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="8">No products found.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-        <div class="d-flex justify-content-center mt-4">
-            {{ $products->links('pagination::bootstrap-5') }}
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Type:</strong></div>
+                <div class="col-md-9">{{ $products->type->name ?? '-' }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Operation Status:</strong></div>
+                <div class="col-md-9">{{ $products->operationStatus->name ?? '-' }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Sector:</strong></div>
+                <div class="col-md-9">{{ $products->sector->name ?? '-' }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>System Type:</strong></div>
+                <div class="col-md-9">{{ $products->type_of_system ?? '-' }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Operation Type:</strong></div>
+                <div class="col-md-9">{{ $products->type_of_operation ?? '-' }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Value From:</strong></div>
+                <div class="col-md-9">₹{{$products->value_from }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Value To:</strong></div>
+                <div class="col-md-9">₹{{$products->value_to}}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Buy/Sell:</strong></div>
+                <div class="col-md-9 text-capitalize">{{ $products->buy_sell }}</div>
+            </div>
+
+            {{-- Image --}}
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>Image:</strong></div>
+                <div class="col-md-9">
+                    @if ($products->images && file_exists(public_path('storage/' . $products->images)))
+                        <img src="{{ asset('storage/' . $products->images) }}" width="200" class="rounded shadow">
+                    @else
+                        <p>No image available.</p>
+                    @endif
+                </div>
+            </div>
+
+            {{-- PDFs --}}
+            <div class="row mb-3">
+                <div class="col-md-3"><strong>PDFs:</strong></div>
+                <div class="col-md-9">
+                    @php $pdfs = json_decode($products->pdfs ?? '[]', true); @endphp
+                    @if (!empty($pdfs))
+                        <ul class="list-group">
+                            @foreach ($pdf as $index => $pdf)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>PDF {{ $index + 1 }}</span>
+                                    <a href="{{ asset('storage/' . $pdf) }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        View
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p>No PDFs uploaded.</p>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
+</div>
 @endsection

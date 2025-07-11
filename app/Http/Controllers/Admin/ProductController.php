@@ -31,15 +31,16 @@ class ProductController extends BaseController
 
     public function create()
     {
-        $nations = Nation::get();
-        $regions = Region::get();
-        $sectors = Sector::get();
-
-        $categories        = Category::where('status', 'active')->get();
-        $types             = Type::where('status', 'active')->get();
+        $nations = Nation::all();
+        $regions = Region::all();
+        $sectors = Sector::all();
+        $categories = Category::where('status', 'active')->get();
+        $types = Type::where('status', 'active')->get();
         $operationStatuses = OperationStatus::where('status', 'active')->get();
 
-        return view('admin.auth.pages.product.create', compact('categories', 'types', 'operationStatuses', 'nations', 'regions' , 'sectors'));
+        return view('admin.auth.pages.product.create', compact(
+            'categories', 'types', 'operationStatuses', 'nations', 'regions', 'sectors'
+        ));
     }
 
     public function store(Request $request)
@@ -49,21 +50,34 @@ class ProductController extends BaseController
             'description'         => 'nullable|string',
             'reference_code'      => 'nullable|string|max:191',
             'operation_code'      => 'nullable|string|max:191',
-            'nation'              => 'nullable|string|max:191',
-            'region'              => 'nullable|string|max:191',
-            'sector'              => 'nullable|string|max:191',
+            // 'currency'            => 'nullable|string|max:10',
+            'value_from'           =>'required|string|max:191',
+            'value_to'           =>  'nullable|string|max:191',
             'type_of_system'      => 'nullable|string|max:191',
+            'type_of_operation'   => 'nullable|string|max:191',
             'buy_sell'            => 'required|in:buy,sell',
-            'images'              => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'pdfs'                => 'nullable|string',
+            'images'               => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'pdf.*'              => 'nullable|mimes:pdf|max:2048',
             'category_id'         => 'required|exists:categories,id',
             'type_id'             => 'required|exists:types,id',
+            'sector_id'           => 'required|exists:sectors,id',
+            'nation_id'           => 'required|exists:nations,id',
+            'region_id'           => 'required|exists:regions,id',
             'operation_status_id' => 'required|exists:operation_statuses,id',
         ]);
 
         if ($request->hasFile('images')) {
-            $validated['images'] = $request->file('images')->store('products', 'public');
+            $validated['images'] = $request->file('images')->store('products/images', 'public');
         }
+
+        $pdfPaths = [];
+        if ($request->hasFile('pdf')) {
+            foreach ($request->file('pdf') as $pdf) {
+                $pdfPaths[] = $pdf->store('products/pdf', 'public');
+            }
+        }
+
+        $validated['pdf'] = json_encode($pdfPaths);
 
         $this->service->create($validated);
 
@@ -72,11 +86,16 @@ class ProductController extends BaseController
 
     public function edit(Product $product)
     {
+        $nations = Nation::all();
+        $regions = Region::all();
+        $sectors = Sector::all();
         $categories = Category::where('status', 'active')->get();
-        $types      = Type::where('status', 'active')->get();
-        $statuses   = OperationStatus::where('status', 'active')->get();
+        $types = Type::where('status', 'active')->get();
+        $operationStatuses = OperationStatus::where('status', 'active')->get();
 
-        return view('admin.auth.pages.product.edit', compact('product', 'categories', 'types', 'statuses'));
+        return view('admin.auth.pages.product.edit', compact(
+            'product', 'categories', 'types', 'operationStatuses', 'nations', 'regions', 'sectors'
+        ));
     }
 
     public function update(Request $request, Product $product)
@@ -86,27 +105,38 @@ class ProductController extends BaseController
             'description'         => 'nullable|string',
             'reference_code'      => 'nullable|string|max:191',
             'operation_code'      => 'nullable|string|max:191',
-            'nation'              => 'nullable|string|max:191',
-            'region'              => 'nullable|string|max:191',
-            'sector'              => 'nullable|string|max:191',
+            // 'currency'            => 'nullable|string|max:10',
+             'value_from'           =>'required|string|max:191',
+             'value_to'           =>  'nullable|string|max:191',
             'type_of_system'      => 'nullable|string|max:191',
+            'type_of_operation'   => 'nullable|string|max:191',
             'buy_sell'            => 'required|in:buy,sell',
-            'images'              => 'nullable|array',
-            'pdfs'                => 'nullable|string',
+            'images'               => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'pdf.*'              => 'nullable|mimes:pdf|max:2048',
             'category_id'         => 'required|exists:categories,id',
             'type_id'             => 'required|exists:types,id',
+            'sector_id'           => 'required|exists:sectors,id',
+            'nation_id'           => 'required|exists:nations,id',
+            'region_id'           => 'required|exists:regions,id',
             'operation_status_id' => 'required|exists:operation_statuses,id',
         ]);
 
-        $imagePaths = is_array($product->images) ? $product->images : json_decode($product->images, true) ?? [];
-
         if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $img) {
-                $imagePaths[] = $img->store('products', 'public');
+            $validated['images'] = $request->file('images')->store('products/images', 'public');
+        } else {
+            $validated['imagess'] = $product->images;
+        }
+
+        $existingPDFs = json_decode($product->pdf ?? '[]', true);
+        $newPDFs = [];
+
+        if ($request->hasFile('pdf')) {
+            foreach ($request->file('pdf') as $pdfs) {
+                $newPDFs[] = $pdfs->store('products/pdf', 'public');
             }
         }
 
-        $validated['images'] = json_encode($imagePaths);
+        $validated['pdf'] = json_encode(array_merge($existingPDFs, $newPDFs));
 
         $this->service->update($product, $validated);
 
@@ -125,8 +155,9 @@ class ProductController extends BaseController
             ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
             ->when($request->type_id, fn($q) => $q->where('type_id', $request->type_id))
             ->when($request->buy_sell, fn($q) => $q->where('buy_sell', $request->buy_sell))
-            ->when($request->nation, fn($q) => $q->where('nation', $request->nation))
-            ->when($request->region, fn($q) => $q->where('region', $request->region))
+            ->when($request->nation_id, fn($q) => $q->where('nation_id', $request->nation_id))
+            ->when($request->region_id, fn($q) => $q->where('region_id', $request->region_id))
+            ->when($request->sector_id, fn($q) => $q->where('sector_id', $request->sector_id))
             ->when($request->operation_status_id, fn($q) => $q->where('operation_status_id', $request->operation_status_id))
             ->whereHas('category', fn($q) => $q->where('status', 'active'))
             ->whereHas('type', fn($q) => $q->where('status', 'active'))

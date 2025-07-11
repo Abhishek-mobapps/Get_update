@@ -9,9 +9,13 @@ class Product extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'title', 'description', 'images', 'price', 'buy_sell',
+        'title',
+         'description', 
+         'images','pdf',
+         'value_from','value_to',
+          'buy_sell',
         'category_id', 'type_id', 'operation_status_id',
-        'reference_code','operation_code','nation','region','sector','type_of_system',
+        'reference_code','operation_code','nation_id','region_id','sector_id','type_of_system',
     ];
 
     // protected $casts = [

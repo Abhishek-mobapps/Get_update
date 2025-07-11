@@ -5374,3 +5374,7 @@ input::placeholder {
 	}
 
 }
+/* -------------------11-07-25------------------ */
+.custom-table tbody tr td{
+	white-space: nowrap;
+}

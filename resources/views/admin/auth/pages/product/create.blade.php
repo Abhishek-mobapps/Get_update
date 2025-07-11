@@ -40,10 +40,10 @@
                         <input type="text" name="title" class="form-control" required value="{{ old('title') }}">
                     </div>
 
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <label>Reference Code</label>
                         <input type="text" name="reference_code" class="form-control" value="{{ old('reference_code') }}">
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="row mb-3">

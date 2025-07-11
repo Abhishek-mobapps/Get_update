@@ -3,6 +3,16 @@
 @section('content')
 <div class="container">
     <h4>Edit Product</h4>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <strong>There were some problems with your input:</strong>
+        <ul class="mb-0 mt-2">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
     <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -13,14 +23,36 @@
             <input name="title" class="form-control" required value="{{ old('title', $product->title) }}">
         </div>
 
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <label>Reference Code</label>
             <input name="reference_code" class="form-control" required value="{{ old('reference_code', $product->reference_code) }}">
-        </div>
+        </div> --}}
 
         <div class="mb-3">
             <label>Sector</label>
-            <input name="sector" class="form-control" required value="{{ old('sector', $product->sector->name ?? '') }}">
+            <select name="sector_id" class="form-control" required>
+                @foreach ($sectors as $cat)
+                    <option value="{{ $cat->id }}" {{ $product->sector_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Nation</label>
+            <select name="nation_id" class="form-control" required>
+                @foreach ($nations as $cat)
+                    <option value="{{ $cat->id }}" {{ $product->nation_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Region</label>
+            <select name="region_id" class="form-control" required>
+                @foreach ($regions as $cat)
+                    <option value="{{ $cat->id }}" {{ $product->category_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                @endforeach
+            </select>
         </div>
 
         <div class="mb-3">

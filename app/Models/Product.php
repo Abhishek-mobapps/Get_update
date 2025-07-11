@@ -17,7 +17,9 @@ class Product extends Model
         'category_id', 'type_id', 'operation_status_id',
         'reference_code','operation_code','nation_id','region_id','sector_id','type_of_system',
     ];
-
+     protected $casts = [
+    'pdf' => 'array',
+    ];
     // protected $casts = [
     //     'images' => 'array',
     // ];

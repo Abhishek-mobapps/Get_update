@@ -1,93 +1,98 @@
-@extends('admin.auth.dashboard')
+<div class="col-md-4 mb-4">
+    <div class="card shadow-sm h-100 border rounded">
 
-@section('content')
-<div class="container py-4">
-    <h3 class="mb-4 text-primary">Welcome to the Capital Community</h3>
-
-    <!-- Filters -->
-    <form method="GET" action="{{ route('admin.productmenu') }}" class="row g-2 mb-4" id="filterForm">
-        <div class="col-md-3">
-            <select name="category_id" class="form-select" onchange="document.getElementById('filterForm').submit();">
-                <option value="">All Categories</option>
-                @foreach($categories as $cat)
-                    <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
-                        {{ $cat->name }}
-                    </option>
-                @endforeach
-            </select>
+        <!-- Header -->
+        <div class="card-header bg-dark text-white text-center fw-bold">
+            Search for Investor in Start-Ups
         </div>
 
-        <div class="col-md-3">
-            <select name="type_id" class="form-select" onchange="document.getElementById('filterForm').submit();">
-                <option value="">All Types</option>
-                @foreach($types as $type)
-                    <option value="{{ $type->id }}" {{ request('type_id') == $type->id ? 'selected' : '' }}>
-                        {{ $type->name }}
-                    </option>
-                @endforeach
-            </select>
+        <!-- Product Image -->
+        <img src="{{ $product->images ? asset('storage/' . $product->images) : asset('assets/images/no-image.png') }}"
+             class="card-img-top" style="height: 200px; object-fit: cover;" alt="Product Image">
+
+        <!-- Request Button -->
+        <div class="p-2 text-center">
+            <a href="#" class="btn btn-dark btn-sm">REQUEST INFORMATION</a>
         </div>
 
-        <div class="col-md-2">
-            <select name="buy_sell" class="form-select" onchange="document.getElementById('filterForm').submit();">
-                <option value="">Buy/Sell</option>
-                <option value="buy" {{ request('buy_sell') == 'buy' ? 'selected' : '' }}>Buy</option>
-                <option value="sell" {{ request('buy_sell') == 'sell' ? 'selected' : '' }}>Sell</option>
-            </select>
+        <!-- State Section -->
+        <div class="bg-light px-3 py-2 d-flex justify-content-between align-items-center">
+            <span class="fw-bold text-uppercase text-secondary small">State</span>
+            <span class="text-success"><i class="bi bi-circle-fill"></i></span>
         </div>
 
-        <div class="col-md-4">
-            <select name="operation_status_id" class="form-select" onchange="document.getElementById('filterForm').submit();">
-                <option value="">Operation Status</option>
-                @foreach($statuses as $status)
-                    <option value="{{ $status->id }}" {{ request('operation_status_id') == $status->id ? 'selected' : '' }}>
-                        {{ $status->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-    </form>
+        <!-- Info Details -->
+        <div class="card-body small px-3 py-2">
+            @if ($product->operation_code)
+                <div class="d-flex flex-column border-bottom py-1">
+                    <div class="fw-bold text-muted">OPERATION CODE</div>
+                    <div>Ref. {{ $product->operation_code }} – {{ $product->title }}</div>
+                </div>
+            @endif
 
-    <!-- Product Cards -->
-    <div class="row">
-        @forelse ($products as $product)
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm rounded">
-                    <div class="card-header bg-dark text-white text-center">
-                        {{ $product->title }}
-                    </div>
+            @if ($product->nation)
+                <div class="d-flex justify-content-between border-bottom py-1">
+                    <div class="fw-bold text-muted">NATION</div>
+                    <div>{{ $product->nation->name }}</div>
+                </div>
+            @endif
 
-                    <img src="{{ $product->images ? asset('storage/' . $product->images) : asset('assets/images/no-image.png') }}"
-                         class="card-img-top" style="height: 180px; object-fit: cover;" alt="Image">
+            @if ($product->region)
+                <div class="d-flex justify-content-between border-bottom py-1">
+                    <div class="fw-bold text-muted">REGION</div>
+                    <div>{{ $product->region->name }}</div>
+                </div>
+            @endif
 
-                    <div class="card-body">
-                        <p><strong>Category:</strong> {{ $product->category->name ?? '-' }}</p>
-                        <p><strong>Type:</strong> {{ $product->type->name ?? '-' }}</p>
-                        <p><strong>Op. Status:</strong> {{ $product->operationStatus->name ?? '-' }}</p>
-                        <p><strong>Buy/Sell:</strong> {{ ucfirst($product->buy_sell) }}</p>
-                        <p><strong>Nation:</strong> {{ $product->nation->name ?? '-' }}</p>
-                        <p><strong>Region:</strong> {{ $product->region->name ?? '-' }}</p>
-                        <p><strong>Price:</strong>
-                            {{$product->value_from }} - {{$product->value_to}}
-                        </p>
-                        <p><strong>Description:</strong> {!! Str::limit($product->description, 100) !!}</p>
-                    </div>
+            @if ($product->sector)
+                <div class="d-flex justify-content-between border-bottom py-1">
+                    <div class="fw-bold text-muted">SECTOR</div>
+                    <div>{{ $product->sector->name }}</div>
+                </div>
+            @endif
 
-                    <div class="card-footer text-center">
-                        <a href="#" class="btn btn-outline-primary btn-sm">View Details</a>
-                        <a href="#" class="btn btn-outline-secondary btn-sm">Investor Deck</a>
+            @if ($product->type_of_system)
+                <div class="d-flex justify-content-between border-bottom py-1">
+                    <div class="fw-bold text-muted">TYPE OF SYSTEM</div>
+                    <div>{{ $product->type_of_system }}</div>
+                </div>
+            @endif
+
+            @if ($product->type_of_operation)
+                <div class="d-flex justify-content-between border-bottom py-1">
+                    <div class="fw-bold text-muted">TYPE OF OPERATION</div>
+                    <div>{{ $product->type_of_operation }}</div>
+                </div>
+            @endif
+
+            @if ($product->value_from || $product->value_to)
+                <div class="d-flex justify-content-between border-bottom py-2">
+                    <div class="fw-bold text-muted">VALUE</div>
+                    <div>
+                        From € {{ number_format($product->value_from, 0, ',', '.') }}
+                        to € {{ number_format($product->value_to ?? 0, 0, ',', '.') }}
                     </div>
                 </div>
-            </div>
-        @empty
-            <div class="col-12 text-center">
-                <p class="text-muted">No products found.</p>
-            </div>
-        @endforelse
-    </div>
+            @endif
 
-    <div class="d-flex justify-content-center mt-4">
-        {{ $products->links('pagination::bootstrap-5') }}
+            @if ($product->description)
+                <div class="pt-2">
+                    <div class="fw-bold text-muted mb-1">DESCRIPTION</div>
+                    <p class="small">{{ Str::limit(strip_tags($product->description), 500) }}</p>
+                </div>
+            @endif
+        </div>
+
+        <!-- Investor Deck Button (PDF) -->
+        @php
+            $pdfs = json_decode($product->pdf ?? '[]', true);
+        @endphp
+        @if (!empty($pdfs))
+            <div class="card-footer text-center bg-white border-top-0">
+                <a href="{{ asset('storage/' . $pdfs[0]) }}" target="_blank"
+                   class="btn btn-outline-primary btn-sm w-100">VIEW INVESTOR DECK</a>
+            </div>
+        @endif
+
     </div>
 </div>
-@endsection

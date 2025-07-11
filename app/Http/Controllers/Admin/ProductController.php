@@ -70,14 +70,19 @@ class ProductController extends BaseController
             $validated['images'] = $request->file('images')->store('products/images', 'public');
         }
 
-        $pdfPaths = [];
-        if ($request->hasFile('pdf')) {
-            foreach ($request->file('pdf') as $pdf) {
-                $pdfPaths[] = $pdf->store('products/pdf', 'public');
-            }
-        }
+        $existingPDFs = json_decode($product->pdf ?? '[]', true); // decode existing (if any)
+$newPDFs = [];
 
-        $validated['pdf'] = json_encode($pdfPaths);
+if ($request->hasFile('pdf')) {
+    foreach ($request->file('pdf') as $pdf) {
+        $filename = $pdf->getClientOriginalName();
+        $pdf->storeAs('products/pdf', $filename, 'public'); // store with original name
+        $newPDFs[] = $filename; // store only name
+    }
+}
+
+$validated['pdf'] = json_encode(array_merge($existingPDFs, $newPDFs));
+
 
         $this->service->create($validated);
 
@@ -127,16 +132,19 @@ class ProductController extends BaseController
             $validated['imagess'] = $product->images;
         }
 
-        $existingPDFs = json_decode($product->pdf ?? '[]', true);
-        $newPDFs = [];
+        $existingPDFs = json_decode($product->pdf ?? '[]', true); // decode existing (if any)
+$newPDFs = [];
 
-        if ($request->hasFile('pdf')) {
-            foreach ($request->file('pdf') as $pdfs) {
-                $newPDFs[] = $pdfs->store('products/pdf', 'public');
-            }
-        }
+if ($request->hasFile('pdf')) {
+    foreach ($request->file('pdf') as $pdf) {
+        $filename = $pdf->getClientOriginalName();
+        $pdf->storeAs('products/pdf', $filename, 'public'); // store with original name
+        $newPDFs[] = $filename; // store only name
+    }
+}
 
-        $validated['pdf'] = json_encode(array_merge($existingPDFs, $newPDFs));
+$validated['pdf'] = json_encode(array_merge($existingPDFs, $newPDFs));
+
 
         $this->service->update($product, $validated);
 

@@ -9,10 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminAuthController extends Controller
 {
-    public function index(){
-        $admin=Admin::get();
-        return view(compact('admin'));
-    }
     public function showRegisterForm()
     {
         return view('admin.auth.register');
@@ -25,24 +21,22 @@ class AdminAuthController extends Controller
             'email'          => 'required|string|email|max:255|unique:admins',
             'contact_number' => 'nullable|string|max:20',
             'password'       => 'required|string|min:6|confirmed',
-            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'profile_image'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
-  
-        $imagePath = null;
 
-        if ($request->hasFile('profile_image')) {
-        $imagePath = $request->file('profile_image')->store('admin-profiles', 'public');
-        }
+        $imagePath = $request->hasFile('profile_image')
+            ? $request->file('profile_image')->store('admin-profiles', 'public')
+            : null;
 
         Admin::create([
             'name'           => $request->name,
             'email'          => $request->email,
             'contact_number' => $request->contact_number,
             'password'       => Hash::make($request->password),
-            'profile_image' => $imagePath,
+            'profile_image'  => $imagePath,
         ]);
 
-        return redirect()->route('admin.login')->with('success', 'Registration successful, please login.');
+        return redirect()->route('admin.login')->with('success', 'Registration successful. Please log in.');
     }
 
     public function showLoginForm()
@@ -59,11 +53,12 @@ class AdminAuthController extends Controller
 
         if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-            session(['just_logged_in' => true]);
             return redirect()->intended(route('admin.dashboard'));
         }
-        
-             return back()->withErrors(['email' => 'Invalid credentials'])->onlyInput('email');
+
+        return back()->withErrors([
+            'email' => 'Invalid credentials.',
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request)
@@ -71,27 +66,25 @@ class AdminAuthController extends Controller
         Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect()->route('admin.login');
     }
 
     public function update(Request $request)
     {
-    $request->validate([
-        'name'           => 'required|string|max:255',
-        'email'          => 'required|email|max:255',
-        'contact_number' => 'required|string|max:20',
-    ]);
+        $request->validate([
+            'name'           => 'required|string|max:255',
+            'email'          => 'required|email|max:255',
+            'contact_number' => 'required|string|max:20',
+        ]);
 
-    $admin = Auth::guard('admin')->user();
+        $admin = Auth::guard('admin')->user();
 
+        $admin->update([
+            'name'           => $request->name,
+            'email'          => $request->email,
+            'contact_number' => $request->contact_number,
+        ]);
 
-    $admin->update([
-        'name'           => $request->name,
-        'email'          => $request->email,
-        'contact_number' => $request->contact_number,
-    ]);
-    Auth::guard('admin')->setUser($admin->fresh());
-    return redirect()->back()->with('success', 'Profile updated successfully.');
-}
+        return redirect()->back()->with('success', 'Profile updated successfully.');
+    }
 }

@@ -6,6 +6,11 @@ use App\Models\Sector;
 
 class SectorService
 {
+    public function paginated($perPage = 10)
+    {
+        return Sector::latest()->paginate($perPage);
+    }
+
     public function all() {
         return Sector::orderBy('name')->get();
     }

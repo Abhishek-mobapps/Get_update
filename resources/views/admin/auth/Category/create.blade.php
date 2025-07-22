@@ -10,10 +10,19 @@
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label">Name</label>
-                        <input type="text" name="name" class="form-control form-control-sm" value="{{ old('name') }}" required>
-                        @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+                        <label class="form-label fst-italic">Name (English)</label>
+                        <input type="text" name="name_en" class="form-control form-control-sm" value="{{ old('name_en') }}" required>
+                        @error('name_en') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fst-italic">Name (Italic)</label>
+                        <input type="text" name="name_it" class="form-control form-control-sm" value="{{ old('name_it') }}" required>
+                        @error('name_it') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+                </div>
+
+                <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">Status</label>
                         <select name="status" class="form-select form-select-sm">

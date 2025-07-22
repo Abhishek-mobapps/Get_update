@@ -53,4 +53,15 @@ class Product extends Model
     {
         return $this->belongsTo(Sector::class);
     }
+
+    public function getPdfsAttribute()
+    {
+        return $this->pdf ?? [];
+    }
+
+    // Mutator: store pdf filenames as JSON
+    public function setPdfsAttribute($value)
+    {
+        $this->attributes['pdf'] = json_encode($value);
+    }
 }

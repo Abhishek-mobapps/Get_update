@@ -13,9 +13,11 @@ use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OperationStatusController;
 
+// Redirect root to admin login
 Route::get('/', function () {
     return redirect()->route('admin.login');
 })->name('login');
+
 
 // ==================== Admin Routes ====================
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -27,7 +29,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('register', [AdminAuthController::class, 'showRegisterForm'])->name('register');
         Route::post('register', [AdminAuthController::class, 'register']);
 
-        // Password reset (optional)
+        // Uncomment if you implement password reset later
         // Route::get('password/forgot', [AdminForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
         // Route::post('password/email', [AdminForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
         // Route::get('password/reset/{token}', [AdminResetPasswordController::class, 'showResetForm'])->name('password.reset');
@@ -37,10 +39,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // ========= Authenticated Admin Routes =========
     Route::middleware('auth:admin')->group(function () {
 
-        // Dashboard & Logout
+        // Dashboard
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('dashboard/showbox', [DashboardController::class, 'showBox'])->name('dashboard.showbox');
+
+        // Logout and Admin Update
         Route::get('logout', [AdminAuthController::class, 'logout'])->name('logout');
+        Route::post('update-admin', [AdminAuthController::class, 'update'])->name('update');
 
         // Admin Profile
         Route::get('profile', [ProfileController::class, 'index'])->name('user-profiles');
@@ -50,7 +55,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('password', [AdminResetPasswordController::class, 'index'])->name('password.change');
         Route::post('new-password', [AdminResetPasswordController::class, 'updatePassword'])->name('password.update');
 
-        // Resource Routes
+        // Resource Controllers
         Route::resources([
             'products' => ProductController::class,
             'nations' => NationController::class,
@@ -61,10 +66,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             'category' => CategoryController::class,
         ]);
 
-        // Additional Routes
+        // Product Extras
         Route::get('product-listing', [ProductController::class, 'productmenu'])->name('productmenu');
+        Route::get('products/{id}', [ProductController::class, 'show'])->name('products.show');
 
-        // Toggle Status + Restore
+        // Toggle Status & Restore Routes
         Route::post('type/{type}/toggle-status', [TypeController::class, 'toggleStatus'])->name('type.toggleStatus');
         Route::get('type/restore/{id}', [TypeController::class, 'restore'])->name('type.restore');
 
@@ -73,4 +79,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('category/{category}/toggle-status', [CategoryController::class, 'toggleStatus'])->name('category.toggleStatus');
         Route::get('category/restore/{id}', [CategoryController::class, 'restore'])->name('category.restore');
     });
+});
+
+
+
+Route::get('/list-pdfs', function () {
+    $files = Storage::files('public/pdfs');
+
+    $pdfs = array_filter($files, function($file) {
+        return strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'pdf';
+    });
+
+    $pdfUrls = array_map(function($file) {
+        $relativePath = str_replace('public/', '', $file);
+        return asset('storage/' . $relativePath);
+    }, $pdfs);
+
+    return view('pdfs.list', ['pdfUrls' => $pdfUrls]);
 });

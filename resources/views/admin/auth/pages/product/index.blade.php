@@ -5,7 +5,7 @@
         <h4 class="mb-4 text-primary">Product List</h4>
 
         <a href="{{ route('admin.products.create') }}" class="btn btn-primary mb-3">+ Add Product</a>
-         <a href="{{ route('admin.productmenu') }}" class="btn btn-primary mb-3">Product Menu</a>
+        <a href="{{ route('admin.productmenu') }}" class="btn btn-primary mb-3">Test Product</a>
 
         @if (session('success'))
             <div class="alert alert-success" id="flash-message">{{ session('success') }}</div>
@@ -14,87 +14,90 @@
             </script>
         @endif
 
-        <!-- ✅ Scrollable table container -->
         <div class="table-responsive">
-            <table class="table custom-table table-striped">
-                <thead class="table-dark text-center">
+            <table id="productTable" class="table table-striped align-middle text-center">
+                <thead class="table-dark">
                     <tr>
                         <th>#</th>
-                        <th>Image</th>
-                        <th>Title</th>
-                        <th>Reference</th>
-                        <th>Op. Code</th>
-                        <th>Nation</th>
-                        <th>Region</th>
+                        <th>Product</th>
                         <th>Category</th>
-                        <th>Type</th>
                         <th>Status</th>
-                        <th>Sector</th>
-                        <th>System</th>
-                        <th>Operation</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Buy/Sell</th>
-                        <th>Description</th>
-                        <th>PDFs</th>
+                        <th>No . Of Pdf</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($products as $i => $product)
+                    @forelse ($products as $index => $product)
                         <tr>
-                            <td>{{ $i + 1 }}</td>
+                            <td>{{ $index + 1 }}</td>
+                            {{-- <td>{{ $product->vendor->name ?? 'N/A' }}</td> --}}
                             <td>
-                                @if ($product->images && file_exists(public_path('storage/' . $product->images)))
-                                    <img src="{{ asset('storage/' . $product->images) }}" width="70" height="70"
-                                        style="object-fit: cover;" class="rounded shadow-sm">
-                                @else
-                                    <img src="{{ asset('assets/images/default.png') }}" width="70" height="70"
-                                        class="rounded shadow-sm">
-                                @endif
+                                @php
+                                    $imagePath = $product->images;
+                                    $hasImage = $imagePath && Storage::disk('public')->exists($imagePath);
+                                @endphp
+                                <div class="product-image">
+                                    @if ($hasImage)
+                                        <img src="{{ asset('storage/' . $imagePath) }}" alt="Product Image">
+                                    @else
+                                        <img src="{{ asset('assets/images/default.png') }}" alt="No Image">
+                                    @endif
+                                </div>
                             </td>
-                            <td>{{ $product->title }}</td>
-                            <td>{{ $product->reference_code }}</td>
-                            <td>{{ $product->operation_code }}</td>
-                            <td>{{ $product->nation->name ?? '-' }}</td>
-                            <td>{{ $product->region->name ?? '-' }}</td>
-                            <td>{{ $product->category->name ?? '-' }}</td>
-                            <td>{{ $product->type->name ?? '-' }}</td>
-                            <td>{{ $product->operationStatus->name ?? '-' }}</td>
-                            <td>{{ $product->sector->name ?? '-' }}</td>
-                            <td>{{ $product->type_of_system ?? '-' }}</td>
-                            <td>{{ $product->type_of_operation ?? '-' }}</td>
-                            <td>₹{{ $product->value_from ?? '-' }}</td>
-                            <td>₹{{ $product->value_to ?? '-' }}</td>
-                            <td>{{ ucfirst($product->buy_sell) }}</td>
-                            <td>{!! Str::limit(strip_tags($product->description), 50) !!}</td>
+                            {{-- <td>{{ $product->category->name_en ?? '-' }}</td> --}}
+                            <td>{{ $product->category->name['it'] ?? 'N/A' }}</td>
+
+                            
                             <td>
-                                @php $pdfs = json_decode($product->pdf ?? '[]', true); @endphp
-                                @if (!empty($pdfs))
-                                    @foreach ($pdfs as $index => $pdf)
-                                        <a href="{{ asset('storage/' . $pdf) }}" target="_blank"
-                                            class="btn btn-outline-primary btn-sm mb-1 d-block">
-                                            PDF {{ $index + 1 }}
-                                        </a>
-                                    @endforeach
+                                @if ($product->operationStatus?->name === 'Active')
+                                    <span class="badge bg-success">Active</span>
                                 @else
-                                    <span class="text-muted">No PDFs</span>
+                                    <span class="badge bg-secondary">{{ $product->operationStatus->name ?? 'N/A' }}</span>
                                 @endif
                             </td>
                             <td class="text-center">
-                                <a href="{{ route('admin.products.edit', $product) }}"
-                                    class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
+                                @php
+                                    $pdfs = json_decode($product->pdf ?? '[]', true);
+                                    $pdfs = is_array($pdfs) ? $pdfs : [$product->pdf];
+                                @endphp
+                                @if (!empty($pdfs))
+                                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                        @foreach ($pdfs as $pdfPath)
+                                            @if ($pdfPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($pdfPath))
+                                                <a href="{{ asset('storage/' . $pdfPath) }}" target="_blank"
+                                                    class="btn btn-outline-danger btn-sm" title="View PDF">
+                                                    <i class="bi bi-file-earmark-pdf-fill fs-5 "></i>
+                                                </a>
+                                            @else
+                                                <span class="text-danger small d-block">Missing</span>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <span class="text-muted">No PDF</span>
+                                @endif
+                            </td>
+
+                            <td>
+                                <a href="{{ route('admin.products.show', $product) }}" class="btn btn-sm btn-info">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-sm btn-warning">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
                                 <form action="{{ route('admin.products.destroy', $product) }}" method="POST"
-                                    class="d-inline-block" onsubmit="return confirm('Delete this product?')">
+                                    class="d-inline-block" onsubmit="return confirm('Are you sure to delete?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-sm btn-danger"><i class="bi bi-trash3-fill"></i></button>
+                                    <button class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="19" class="text-center">No products found.</td>
+                            <td colspan="8" class="text-center text-muted">No products found.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -102,3 +105,25 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#productTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50, 100],
+                columnDefs: [{
+                        orderable: false,
+                        targets: [6, 7]
+                    } // Disable sort on PDFs and Actions
+                ]
+            });
+        });
+    </script>
+@endpush

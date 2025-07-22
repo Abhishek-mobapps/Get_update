@@ -48,7 +48,7 @@
 									<div class="mb-3 position-relative">
 										<label class="form-label">New Password</label>
 										<input type="password" name="new_password" class="form-control password-field" placeholder="Enter new password" required>
-										<span class="position-absolute top-50 end-0 translate-middle-y me-3 toggle-password" style="cursor: pointer;">
+										<span class="position-absolute top-50 bottom-50 end-0 translate-middle-y me-3 toggle-password" style="cursor: pointer;">
 											<i class="bi bi-eye-slash-fill"></i>
 										</span>
 										@error('new_password')
@@ -82,26 +82,24 @@
 </div>
 
 
-@push('scripts')
 <script>
-	document.querySelectorAll('.toggle-password').forEach(function(toggle) {
-		toggle.addEventListener('click', function () {
-			const input = this.closest('.position-relative').querySelector('.password-field');
-			const icon = this.querySelector('i');
-
+document.addEventListener('DOMContentLoaded', () => {
+	console.log('Inline toggle script running');
+	document.querySelectorAll('.toggle-password').forEach(toggle => {
+		toggle.addEventListener('click', () => {
+			const input = toggle.closest('.position-relative').querySelector('.password-field');
+			const icon = toggle.querySelector('i');
 			if (input.type === 'password') {
 				input.type = 'text';
-				icon.classList.remove('bi-eye-slash-fill');
-				icon.classList.add('bi-eye-fill');
+				icon.classList.replace('bi-eye-slash-fill', 'bi-eye-fill');
 			} else {
 				input.type = 'password';
-				icon.classList.remove('bi-eye-fill');
-				icon.classList.add('bi-eye-slash-fill');
+				icon.classList.replace('bi-eye-fill', 'bi-eye-slash-fill');
 			}
 		});
 	});
+});
 </script>
-@endpush
 
 
 @endsection

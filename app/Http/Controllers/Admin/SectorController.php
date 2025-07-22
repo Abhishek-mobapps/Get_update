@@ -20,8 +20,10 @@ class SectorController extends BaseController
 
     public function index()
     {
-        return view('admin.auth.pages.sectors.index', ['sectors' => $this->service->all()]);
+    $sectors = $this->service->paginated();
+    return view('admin.auth.pages.sectors.index', compact('sectors'));
     }
+
 
     public function create()
     {
@@ -44,13 +46,13 @@ class SectorController extends BaseController
     {
         $request->validate(['name' => 'required|string|max:191']);
         $this->service->update($sector, $request->all());
-        return redirect()->route('admin.regions.index')->with('success', 'Region updated');
+        return redirect()->route('admin.sectors.index')->with('success', 'Sector updated');
     }
 
     public function destroy(Sector $sector)
     {
         $this->service->delete($sector);
-        return back()->with('success', 'Sector soft deleted');
+        return back()->with('success', 'Sector deleted');
     }
 
     public function restore($id)

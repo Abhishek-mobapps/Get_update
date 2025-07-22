@@ -12,19 +12,15 @@
                     <div id="flash-message" class="alert alert-success" role="alert">
                         {{ session('success') }}
                     </div>
-
                     <script>
-                        // Auto-fade after 3 seconds
                         setTimeout(() => {
                             let alert = document.getElementById('flash-message');
                             if (alert) {
                                 alert.style.transition = "opacity 0.5s ease-out";
                                 alert.style.opacity = "0";
-
-                                // Remove completely after fade
                                 setTimeout(() => alert.remove(), 500);
                             }
-                        }, 3000); // 3 seconds
+                        }, 3000);
                     </script>
                 @endif
 
@@ -32,18 +28,27 @@
                     <thead class="table-light">
                         <tr>
                             <th>Sr. No</th>
-                            <th>Name</th>
+                            <th>English Name</th>
+                            <th><em>Italic Name</em></th>
                             <th>Status</th>
                             <th>Created</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-
                         @forelse ($categories as $index => $category)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $category->name }}</td>
+                                @php
+                                    $name = json_decode($category->name, true);
+                                @endphp
+
+                                <td>{{ $name['en'] ?? '-' }}</td>
+                                <td>{{ $name['it'] ?? '-' }}</td>
+
+
+
+
                                 <td>
                                     <form method="POST" action="{{ route('admin.category.toggleStatus', $category) }}">
                                         @csrf
@@ -54,17 +59,15 @@
                                     </form>
                                 </td>
                                 <td>{{ $category->created_at->format('d M Y') }}</td>
-                                <td class="text-center align-middle">
+                                <td>
                                     <div class="d-flex justify-content-center align-items-center" style="gap: 10px;">
-                                        <!-- Edit (Bootstrap Icon) -->
                                         <a href="{{ route('admin.category.edit', $category) }}" title="Edit"
                                             class="text-primary d-flex align-items-center">
                                             <i class="bi bi-pencil-square fs-5"></i>
                                         </a>
 
-                                        <!-- Delete (Bootstrap Icon) -->
                                         <form action="{{ route('admin.category.destroy', $category) }}" method="POST"
-                                            onsubmit="return confirm('Delete product?')" style="margin: 0;"
+                                            onsubmit="return confirm('Delete category?')" style="margin: 0;"
                                             class="d-flex align-items-center">
                                             @csrf
                                             @method('DELETE')
@@ -75,11 +78,10 @@
                                         </form>
                                     </div>
                                 </td>
-
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-muted">No categories found.</td>
+                                <td colspan="6" class="text-muted">No categories found.</td>
                             </tr>
                         @endforelse
                     </tbody>

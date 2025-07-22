@@ -14,4 +14,19 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    protected $casts = [
+    'name' => 'array',
+];
+
+public function getNameEnAttribute()
+{
+    return $this->name['en'] ?? null;
+}
+
+public function getNameItAttribute()
+{
+    return $this->name['it'] ?? null;
+}
+
 }

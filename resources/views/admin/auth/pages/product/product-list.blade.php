@@ -1,98 +1,113 @@
-<div class="col-md-4 mb-4">
-    <div class="card shadow-sm h-100 border rounded">
+@extends('layouts.app')
 
-        <!-- Header -->
-        <div class="card-header bg-dark text-white text-center fw-bold">
-            Search for Investor in Start-Ups
-        </div>
+@section('content')
+<div style="padding: 25%; background: #d1b382; min-height: 100vh;">
 
-        <!-- Product Image -->
-        <img src="{{ $product->images ? asset('storage/' . $product->images) : asset('assets/images/no-image.png') }}"
-             class="card-img-top" style="height: 200px; object-fit: cover;" alt="Product Image">
+    <form method="GET" action="{{ route('products.index') }}" style="background:#000; padding:15px; border-radius:8px; display:flex; gap:15px; flex-wrap: wrap; justify-content:center; margin-bottom:20px;">
+        <select name="category_id" onchange="this.form.submit()" style="padding:8px; border-radius:4px;">
+            <option value="">All Categories</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}" {{ request('category_id')==$category->id ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
 
-        <!-- Request Button -->
-        <div class="p-2 text-center">
-            <a href="#" class="btn btn-dark btn-sm">REQUEST INFORMATION</a>
-        </div>
+        <select name="type_id" onchange="this.form.submit()" style="padding:8px; border-radius:4px;">
+            <option value="">All Types</option>
+            @foreach($types as $type)
+                <option value="{{ $type->id }}" {{ request('type_id')==$type->id ? 'selected' : '' }}>
+                    {{ $type->name }}
+                </option>
+            @endforeach
+        </select>
 
-        <!-- State Section -->
-        <div class="bg-light px-3 py-2 d-flex justify-content-between align-items-center">
-            <span class="fw-bold text-uppercase text-secondary small">State</span>
-            <span class="text-success"><i class="bi bi-circle-fill"></i></span>
-        </div>
+        <select name="buy_sell" onchange="this.form.submit()" style="padding:8px; border-radius:4px;">
+            <option value="">Buy/Sell</option>
+            <option value="buy" {{ request('buy_sell')=='buy' ? 'selected' : '' }}>Buy</option>
+            <option value="sell" {{ request('buy_sell')=='sell' ? 'selected' : '' }}>Sell</option>
+        </select>
 
-        <!-- Info Details -->
-        <div class="card-body small px-3 py-2">
-            @if ($product->operation_code)
-                <div class="d-flex flex-column border-bottom py-1">
-                    <div class="fw-bold text-muted">OPERATION CODE</div>
-                    <div>Ref. {{ $product->operation_code }} – {{ $product->title }}</div>
-                </div>
-            @endif
+        <select name="operation_status_id" onchange="this.form.submit()" style="padding:8px; border-radius:4px;">
+            <option value="">Operation Status</option>
+            @foreach($operationStatuses as $status)
+                <option value="{{ $status->id }}" {{ request('operation_status_id')==$status->id ? 'selected' : '' }}>
+                    {{ $status->name }}
+                </option>
+            @endforeach
+        </select>
+    </form>
 
-            @if ($product->nation)
-                <div class="d-flex justify-content-between border-bottom py-1">
-                    <div class="fw-bold text-muted">NATION</div>
-                    <div>{{ $product->nation->name }}</div>
-                </div>
-            @endif
+    @if($selectedCategory)
+        <h2 style="color:#000; font-weight:700; margin-bottom:15px; text-align:center;">
+            {{ $selectedCategory->name }}
+        </h2>
+    @endif
 
-            @if ($product->region)
-                <div class="d-flex justify-content-between border-bottom py-1">
-                    <div class="fw-bold text-muted">REGION</div>
-                    <div>{{ $product->region->name }}</div>
-                </div>
-            @endif
+    <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center;">
 
-            @if ($product->sector)
-                <div class="d-flex justify-content-between border-bottom py-1">
-                    <div class="fw-bold text-muted">SECTOR</div>
-                    <div>{{ $product->sector->name }}</div>
-                </div>
-            @endif
+        @forelse ($products as $product)
+        <div style="background:#d1b382; border-radius:12px; padding:15px; width:320px; box-shadow:0 4px 8px rgba(0,0,0,0.1); display:flex; flex-direction:column;">
 
-            @if ($product->type_of_system)
-                <div class="d-flex justify-content-between border-bottom py-1">
-                    <div class="fw-bold text-muted">TYPE OF SYSTEM</div>
-                    <div>{{ $product->type_of_system }}</div>
-                </div>
-            @endif
-
-            @if ($product->type_of_operation)
-                <div class="d-flex justify-content-between border-bottom py-1">
-                    <div class="fw-bold text-muted">TYPE OF OPERATION</div>
-                    <div>{{ $product->type_of_operation }}</div>
-                </div>
-            @endif
-
-            @if ($product->value_from || $product->value_to)
-                <div class="d-flex justify-content-between border-bottom py-2">
-                    <div class="fw-bold text-muted">VALUE</div>
-                    <div>
-                        From € {{ number_format($product->value_from, 0, ',', '.') }}
-                        to € {{ number_format($product->value_to ?? 0, 0, ',', '.') }}
-                    </div>
-                </div>
-            @endif
-
-            @if ($product->description)
-                <div class="pt-2">
-                    <div class="fw-bold text-muted mb-1">DESCRIPTION</div>
-                    <p class="small">{{ Str::limit(strip_tags($product->description), 500) }}</p>
-                </div>
-            @endif
-        </div>
-
-        <!-- Investor Deck Button (PDF) -->
-        @php
-            $pdfs = json_decode($product->pdf ?? '[]', true);
-        @endphp
-        @if (!empty($pdfs))
-            <div class="card-footer text-center bg-white border-top-0">
-                <a href="{{ asset('storage/' . $pdfs[0]) }}" target="_blank"
-                   class="btn btn-outline-primary btn-sm w-100">VIEW INVESTOR DECK</a>
+            <div style="position:relative; margin-bottom:12px;">
+                <img src="{{ asset('storage/' . $product->images) }}" alt="{{ $product->title }}" style="width:100%; height:180px; object-fit:cover; border-radius:8px;">
+                <span style="position:absolute; top:8px; left:8px; background:#000; color:#fff; padding:5px 10px; border-radius:4px; font-size:13px; font-weight:700;">
+                    {{ $product->category->name }}
+                </span>
             </div>
-        @endif
 
+            <div style="color:#000; font-weight:600; font-size:14px; flex-grow:1;">
+                @php
+                $fields = [
+                    ['Operation code', $product->operation_code],
+                    ['Nation', $product->nation->name ?? 'N/A'],
+                    ['Region', $product->region->name ?? 'N/A'],
+                    ['Sector', $product->sector->name ?? 'N/A'],
+                    ['System type', $product->type_of_system],
+                    ['Operation Type', $product->type_of_operation],
+                    ['Value', $product->value_from]
+                ];
+                @endphp
+
+                @foreach ($fields as $field)
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                    <div>{{ $field[0] }}</div>
+                    <div>{{ $field[1] ?? 'N/A' }}</div>
+                </div>
+                @if (!$loop->last)
+                    <hr style="margin:4px 0; border-color:rgba(0,0,0,0.2);">
+                @endif
+                @endforeach
+            </div>
+
+            <div style="display:flex; align-items:center; gap:8px; margin-top:15px; flex-wrap: wrap;">
+
+                @php
+                    $pdfs = is_array($product->pdf) ? $product->pdf : json_decode($product->pdf ?? '[]', true);
+                    if (!is_array($pdfs)) $pdfs = [$product->pdf];
+                @endphp
+
+                @if(!empty($pdfs) && count($pdfs) > 0)
+                    @foreach ($pdfs as $pdf)
+                        @php
+                            $pdfPath = is_array($pdf) ? ($pdf['path'] ?? '') : $pdf;
+                        @endphp
+                        @if ($pdfPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($pdfPath))
+                            <a href="{{ asset('storage/' . $pdfPath) }}" target="_blank" style="background:#7396ae; border-radius:6px; padding:12px 18px; color:#fff; font-weight:600; font-size:14px; text-decoration:none; display:inline-block; min-width:110px; text-align:center;">
+                                PDF
+                            </a>
+                        @endif
+                    @endforeach
+                @endif
+
+                <a href="#" style="background:#a88346; border-radius:6px; padding:12px 18px; color:#000; font-weight:600; font-size:16px; text-align:center; text-decoration:none; min-width:110px; flex-grow:1; user-select:none;">
+                    REQUEST INFORMATION
+                </a>
+            </div>
+        </div>
+        @empty
+        <p style="width:100%; text-align:center; color:#000;">No products found matching your filters.</p>
+        @endforelse
     </div>
 </div>
+@endsection

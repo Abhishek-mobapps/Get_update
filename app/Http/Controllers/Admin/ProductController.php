@@ -11,6 +11,7 @@ use App\Models\Region;
 use App\Models\Type;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Routing\Controller as BaseController;
 
 class ProductController extends BaseController
@@ -26,6 +27,9 @@ class ProductController extends BaseController
     public function index()
     {
         $products = $this->service->paginated();
+        foreach ($products as $product) {
+            $product->imageExists = $product->images && Storage::disk('public')->exists($product->images);
+        }
         return view('admin.auth.pages.product.index', compact('products'));
     }
 
@@ -50,14 +54,13 @@ class ProductController extends BaseController
             'description'         => 'nullable|string',
             'reference_code'      => 'nullable|string|max:191',
             'operation_code'      => 'nullable|string|max:191',
-            // 'currency'            => 'nullable|string|max:10',
-            'value_from'           =>'required|string|max:191',
-            'value_to'           =>  'nullable|string|max:191',
+            'value_from'          => 'required|string|max:191',
+            'value_to'            => 'nullable|string|max:191',
             'type_of_system'      => 'nullable|string|max:191',
             'type_of_operation'   => 'nullable|string|max:191',
             'buy_sell'            => 'required|in:buy,sell',
-            'images'               => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'pdf.*'              => 'nullable|mimes:pdf|max:2048',
+            'images'              => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'pdfs.*'              => 'nullable|mimes:pdf|max:2048',
             'category_id'         => 'required|exists:categories,id',
             'type_id'             => 'required|exists:types,id',
             'sector_id'           => 'required|exists:sectors,id',
@@ -70,21 +73,34 @@ class ProductController extends BaseController
             $validated['images'] = $request->file('images')->store('products/images', 'public');
         }
 
-        $existingPDFs = json_decode($product->pdf ?? '[]', true); // decode existing (if any)
-$newPDFs = [];
+        $pdfPaths = [];
+        if ($request->hasFile('pdfs')) {
+            foreach ($request->file('pdfs') as $pdf) {
+                if ($pdf->isValid()) {
+                    $pdfPaths[] = $pdf->store('products/pdfs', 'public');
+                }
+            }
+        }
 
-if ($request->hasFile('pdf')) {
-    foreach ($request->file('pdf') as $pdf) {
-        $filename = $pdf->getClientOriginalName();
-        $pdf->storeAs('products/pdf', $filename, 'public'); // store with original name
-        $newPDFs[] = $filename; // store only name
-    }
-}
-
-$validated['pdf'] = json_encode(array_merge($existingPDFs, $newPDFs));
-
-
-        $this->service->create($validated);
+        $product = new Product();
+        $product->title = $validated['title'];
+        $product->description = $validated['description'] ?? null;
+        $product->reference_code = $validated['reference_code'] ?? null;
+        $product->operation_code = $validated['operation_code'] ?? null;
+        $product->value_from = $validated['value_from'];
+        $product->value_to = $validated['value_to'] ?? null;
+        $product->type_of_system = $validated['type_of_system'] ?? null;
+        $product->type_of_operation = $validated['type_of_operation'] ?? null;
+        $product->buy_sell = $validated['buy_sell'];
+        $product->images = $validated['images'] ?? null;
+        $product->pdf = json_encode($pdfPaths);
+        $product->category_id = $validated['category_id'];
+        $product->type_id = $validated['type_id'];
+        $product->sector_id = $validated['sector_id'];
+        $product->nation_id = $validated['nation_id'];
+        $product->region_id = $validated['region_id'];
+        $product->operation_status_id = $validated['operation_status_id'];
+        $product->save();
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
@@ -110,14 +126,13 @@ $validated['pdf'] = json_encode(array_merge($existingPDFs, $newPDFs));
             'description'         => 'nullable|string',
             'reference_code'      => 'nullable|string|max:191',
             'operation_code'      => 'nullable|string|max:191',
-            // 'currency'            => 'nullable|string|max:10',
-             'value_from'           =>'required|string|max:191',
-             'value_to'           =>  'nullable|string|max:191',
+            'value_from'          => 'required|string|max:191',
+            'value_to'            => 'nullable|string|max:191',
             'type_of_system'      => 'nullable|string|max:191',
             'type_of_operation'   => 'nullable|string|max:191',
             'buy_sell'            => 'required|in:buy,sell',
-            'images'               => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'pdf.*'              => 'nullable|mimes:pdf|max:2048',
+            'images'              => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'pdfs.*'              => 'nullable|mimes:pdf|max:2048',
             'category_id'         => 'required|exists:categories,id',
             'type_id'             => 'required|exists:types,id',
             'sector_id'           => 'required|exists:sectors,id',
@@ -126,27 +141,37 @@ $validated['pdf'] = json_encode(array_merge($existingPDFs, $newPDFs));
             'operation_status_id' => 'required|exists:operation_statuses,id',
         ]);
 
-        if ($request->hasFile('images')) {
-            $validated['images'] = $request->file('images')->store('products/images', 'public');
-        } else {
-            $validated['imagess'] = $product->images;
+        $validated['images'] = $request->hasFile('images')
+            ? $request->file('images')->store('products/images', 'public')
+            : $product->images;
+
+        $pdfPaths = json_decode($product->pdf ?? '[]', true);
+        if ($request->hasFile('pdfs')) {
+            foreach ($request->file('pdfs') as $pdf) {
+                if ($pdf->isValid()) {
+                    $pdfPaths[] = $pdf->store('products/pdfs', 'public');
+                }
+            }
         }
 
-        $existingPDFs = json_decode($product->pdf ?? '[]', true); // decode existing (if any)
-$newPDFs = [];
-
-if ($request->hasFile('pdf')) {
-    foreach ($request->file('pdf') as $pdf) {
-        $filename = $pdf->getClientOriginalName();
-        $pdf->storeAs('products/pdf', $filename, 'public'); // store with original name
-        $newPDFs[] = $filename; // store only name
-    }
-}
-
-$validated['pdf'] = json_encode(array_merge($existingPDFs, $newPDFs));
-
-
-        $this->service->update($product, $validated);
+        $product->title = $validated['title'];
+        $product->description = $validated['description'] ?? null;
+        $product->reference_code = $validated['reference_code'] ?? null;
+        $product->operation_code = $validated['operation_code'] ?? null;
+        $product->value_from = $validated['value_from'];
+        $product->value_to = $validated['value_to'] ?? null;
+        $product->type_of_system = $validated['type_of_system'] ?? null;
+        $product->type_of_operation = $validated['type_of_operation'] ?? null;
+        $product->buy_sell = $validated['buy_sell'];
+        $product->images = $validated['images'];
+        $product->pdf = json_encode($pdfPaths);
+        $product->category_id = $validated['category_id'];
+        $product->type_id = $validated['type_id'];
+        $product->sector_id = $validated['sector_id'];
+        $product->nation_id = $validated['nation_id'];
+        $product->region_id = $validated['region_id'];
+        $product->operation_status_id = $validated['operation_status_id'];
+        $product->save();
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
@@ -179,5 +204,31 @@ $validated['pdf'] = json_encode(array_merge($existingPDFs, $newPDFs));
             'types'      => Type::where('status', 'active')->get(),
             'statuses'   => OperationStatus::where('status', 'active')->get(),
         ]);
+    }
+
+    public function show($id)
+    {
+        $product = Product::with([
+            'category',
+            'type',
+            'sector',
+            'nation',
+            'region',
+            'operationStatus',
+        ])->findOrFail($id);
+
+        $images = [];
+        if (!empty($product->images)) {
+            $decodedImages = json_decode($product->images, true);
+            $images = is_array($decodedImages) ? $decodedImages : [$product->images];
+        }
+
+        $pdfs = [];
+        if (!empty($product->pdf)) {
+            $decodedPdfs = json_decode($product->pdf, true);
+            $pdfs = is_array($decodedPdfs) ? $decodedPdfs : [$product->pdf];
+        }
+
+        return view('admin.auth.pages.product.show', compact('product', 'images', 'pdfs'));
     }
 }

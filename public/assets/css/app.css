@@ -5378,3 +5378,16 @@ input::placeholder {
 .custom-table tbody tr td{
 	white-space: nowrap;
 }
+
+
+/* -------------22-07-25 --------------*/
+.product-image img{
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+
+}
+.card-data{
+	box-shadow: unset;
+	border: 1px solid #ccc !important;
+}

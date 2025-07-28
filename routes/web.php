@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\AdminAuthController;
+// use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\AdminResetPasswordController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
@@ -14,6 +14,10 @@ use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OperationStatusController;
 
+
+Route::get('reg', function () {
+    return view('registration');
+});
 // Redirect root to admin login
 // Route::get('/', fn () => redirect()->route('admin.login'))->name('login');
 
@@ -36,9 +40,7 @@ use App\Http\Controllers\Admin\OperationStatusController;
 //     return view('forget-pass');
 // })->name('forget-page');
 
-// Route::get('reg', function () {
-//     return view('registration');
-// })->name('register-page');
+
 
 
 // ==========================
@@ -118,24 +120,42 @@ Route::prefix('admin')->name('admin.')->group(function () {
 // ==========================
 //     PDF Listing Route
 // ==========================
-Route::get('/list-pdfs', function () {
-    $files = Storage::files('public/pdfs');
+// Route::get('/list-pdfs', function () {
+//     $files = Storage::files('public/pdfs');
 
-    $pdfs = array_filter($files, fn($file) => strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'pdf');
+//     $pdfs = array_filter($files, fn($file) => strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'pdf');
 
-    $pdfUrls = array_map(function ($file) {
-        $relativePath = str_replace('public/', '', $file);
-        return asset('storage/' . $relativePath);
-    }, $pdfs);
+//     $pdfUrls = array_map(function ($file) {
+//         $relativePath = str_replace('public/', '', $file);
+//         return asset('storage/' . $relativePath);
+//     }, $pdfs);
 
-    return view('pdfs.list', ['pdfUrls' => $pdfUrls]);
-});
+//     return view('pdfs.list', ['pdfUrls' => $pdfUrls]);
+// });
 //  ---------------------------------------------------
 
+use App\Http\Controllers\Frontend\AuthController;
 
-use App\Http\Controllers\AuthController;
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('userlogin');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/userlogin', [AuthController::class, 'login'])->name('login.submit');
+
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('userregister');
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('userlogout');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+
+Route::get('/logout', [AuthController::class, 'logout'])->name('userlogout');
+
+Route::get('/reserved', [AuthController::class, 'reservedArea'])->name('reserved');
+
+// 🛡️ Protected route
+Route::middleware(['userauth'])->group(function () {
+    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard-page');
+});
+
+
+
+// Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+//     Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+//     Route::get('/users/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.users.edit');
+//     // add update route for password reset form submission
+// });
+

@@ -26,57 +26,69 @@
                 <div class="col-md-5">
                     <div class="card login-card">
                         <div class="card-body">
-                            <form>
+                            <form method="POST" action="{{ route('login.submit') }}">
+                                @csrf
                                 <div class="row">
+                                    <!-- Logo -->
                                     <div class="col-md-12">
                                         <div class="logo-img">
                                             <img src="{{ asset('./assets/asset/img/logo.jpeg') }}" />
                                         </div>
                                     </div>
+
+                                    <!-- Heading -->
                                     <div class="col-md-12">
                                         <div class="access-hd">
                                             <h6>Welcome to G.E.D. Intermedia</h6>
                                         </div>
                                     </div>
+
+                                    <!-- Email/Username -->
                                     <div class="col-md-12">
                                         <div class="field-set tg-contact-input">
-                                            <label>Username</label>
-                                            <input type="text" />
+                                            <label>Email</label>
+                                            <input type="email" name="email" required />
                                         </div>
                                     </div>
+
+                                    <!-- Password -->
                                     <div class="col-md-12">
                                         <div class="field-set tg-contact-input">
                                             <label>Password</label>
-                                            <input type="password" />
+                                            <input type="password" name="password" required />
                                         </div>
                                     </div>
+
+                                    <!-- Remember Me and Forgot -->
                                     <div class="col-md-12">
                                         <div class="d-flex justify-content-between">
                                             <div class="form-check check-ratio">
-                                                <input class="form-check-input" type="checkbox" value=""
+                                                <input class="form-check-input" type="checkbox" name="remember"
                                                     id="flexCheckDefault">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     Remember me
                                                 </label>
                                             </div>
                                             <div class="forget-pass">
-                                                <a href="{{ route('forget-page') }}">Forgot your password?</a>
+                                                <a href="#">Forgot your password?</a>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Submit -->
                                     <div class="col-md-12">
                                         <div class="text-center">
-                                            <a href="{{ route('home') }}" class="tg-btn-sign btn btn-primary">Sign
-                                                In</a>
+                                            <button type="submit" class="tg-btn-sign btn btn-primary">Sign In</button>
                                         </div>
 
                                         <div class="create-new">
-                                            <p>Don't have an account? <a href="{{ route('register-page') }}">Create
+                                            <p>Don't have an account? <a href="{{ route('userregister') }}">Create
                                                     one</a></p>
                                         </div>
                                     </div>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>

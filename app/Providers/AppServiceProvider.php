@@ -26,7 +26,8 @@ class AppServiceProvider extends ServiceProvider
     if (app()->environment('production')) {
         \Illuminate\Support\Facades\URL::forceScheme('https');
     }
-
     $router->aliasMiddleware('guest.admin', RedirectIfAuthenticatedAdmin::class);
+
+    // $router->aliasMiddleware('guest.user', RedirectIfAuthenticatedUser::class);
     }
 }

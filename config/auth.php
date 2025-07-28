@@ -29,6 +29,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
+        
     ],
 
     'passwords' => [

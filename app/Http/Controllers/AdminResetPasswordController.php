@@ -30,9 +30,9 @@ class AdminResetPasswordController extends Controller
         return back()->with('error', 'Current password is incorrect.');
     }
 
-    $admin->update([
-        'password' => Hash::make($request->new_password),
-    ]);
+    // $admin->update([
+    //     'password' => Hash::make($request->new_password),
+    // ]);
 
     return redirect()->intended(route('admin.user-profiles'))->with('success', 'Password updated successfully.');
 }

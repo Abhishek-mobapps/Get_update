@@ -8,7 +8,7 @@ class SectorService
 {
     public function paginated($perPage = 10)
     {
-        return Sector::latest()->paginate($perPage);
+        return Sector::withoutTrashed()->latest()->get();
     }
 
     public function all() {

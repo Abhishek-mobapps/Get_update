@@ -29,11 +29,11 @@
                     @csrf @method('PUT')
 
                     <div class="row g-3 mb-3">
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <label>Title <span class="text-danger">*</span></label>
                             <input type="text" name="title" class="form-control"
                                 value="{{ old('title', $product->title) }}" required>
-                        </div>
+                        </div> --}}
                         <div class="col-md-4">
                             <label>Operation Code</label>
                             <input type="text" name="operation_code" class="form-control"

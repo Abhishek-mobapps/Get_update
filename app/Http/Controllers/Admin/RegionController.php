@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-// use App\Http\Controllers\Controller;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use App\Services\RegionService;
@@ -20,7 +19,8 @@ class RegionController extends BaseController
 
     public function index()
     {
-        return view('admin.auth.pages.regions.index', ['regions' => $this->service->all()]);
+        $regions = $this->service->paginated();
+        return view('admin.auth.pages.regions.index', compact('regions'));
     }
 
     public function create()
@@ -30,8 +30,13 @@ class RegionController extends BaseController
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|max:191']);
+        $request->validate([
+            'name'    => 'required|string|max:191|unique:regions,name',
+            'name_it' => 'required|string|max:191|unique:regions,name_it',
+        ]);
+
         $this->service->store($request->all());
+
         return redirect()->route('admin.regions.index')->with('success', 'Region created');
     }
 
@@ -42,15 +47,20 @@ class RegionController extends BaseController
 
     public function update(Request $request, Region $region)
     {
-        $request->validate(['name' => 'required|string|max:191']);
+        $request->validate([
+            'name'    => 'required|string|max:191|unique:regions,name,' . $region->id,
+            'name_it' => 'required|string|max:191|unique:regions,name_it,' . $region->id,
+        ]);
+
         $this->service->update($region, $request->all());
+
         return redirect()->route('admin.regions.index')->with('success', 'Region updated');
     }
 
     public function destroy(Region $region)
     {
         $this->service->delete($region);
-        return back()->with('success', 'Nation soft deleted');
+        return back()->with('success', 'Region soft deleted');
     }
 
     public function restore($id)

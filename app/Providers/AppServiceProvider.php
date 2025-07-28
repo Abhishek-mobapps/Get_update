@@ -22,11 +22,11 @@ class AppServiceProvider extends ServiceProvider
      */
      public function boot(Router $router)
     {
-        // Register middleware alias 'guest.admin'
-            if (app()->environment('production')) {
-        URL::forceScheme('https');
+       
+    if (app()->environment('production')) {
+        \Illuminate\Support\Facades\URL::forceScheme('https');
     }
 
-        $router->aliasMiddleware('guest.admin', RedirectIfAuthenticatedAdmin::class);
+    $router->aliasMiddleware('guest.admin', RedirectIfAuthenticatedAdmin::class);
     }
 }

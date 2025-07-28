@@ -1,21 +1,33 @@
 @extends('admin.auth.dashboard')
 
 @section('content')
-<div class="container mt-4">
-    <h4>Add {{ ucfirst($title ?? 'Nation') }}</h4>
+<div class="container-fluid mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">Add Type</div>
+        <div class="card-body">
+            <form action="{{ route('admin.nations.store') }}" method="POST">
+                @csrf
 
-    <form action="{{ route('admin.nations.store') }}" method="POST">
-        @csrf
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fst-italic">{{ ucfirst($title ?? 'Nation') }} Name (English)</label>
+                        <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
+                        @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
 
-        <div class="mb-3">
-            <label for="name" class="form-label">{{ ucfirst($title ?? 'Nation') }} Name</label>
-            <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
-            @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+                    {{-- <div class="col-md-6">
+                        <label class="form-label fst-italic">Name (Italic)</label>
+                        <input type="HIDDEN" name="name_it" class="form-control form-control-sm" value="{{ old('name_it') }}" required>
+                        @error('name_it') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div> --}}
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('admin.nations.index') }}" class="btn btn-secondary btn-sm">Back</a>
+                    <button type="submit" class="btn btn-primary btn-sm">Add</button>
+                </div>
+            </form>
         </div>
-
-        <button type="submit" class="btn btn-primary">Create</button>
-        <a href="{{ route('admin.nations.index') }}" class="btn btn-secondary">Back</a>
-    </form>
+    </div>
 </div>
 @endsection
 

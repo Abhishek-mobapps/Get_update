@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OperationStatus extends Model
 {
-    protected $fillable = ['name', 'status'];
+    protected $fillable = ['name', 'name_it' , 'status'];
 
     public function products()
     {

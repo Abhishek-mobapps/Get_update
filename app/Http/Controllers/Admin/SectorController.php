@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-// use App\Http\Controllers\Controller;
 use App\Models\Sector;
 use Illuminate\Http\Request;
 use App\Services\SectorService;
@@ -20,10 +19,9 @@ class SectorController extends BaseController
 
     public function index()
     {
-    $sectors = $this->service->paginated();
-    return view('admin.auth.pages.sectors.index', compact('sectors'));
+        $sectors = $this->service->paginated();
+        return view('admin.auth.pages.sectors.index', compact('sectors'));
     }
-
 
     public function create()
     {
@@ -32,8 +30,13 @@ class SectorController extends BaseController
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|max:191']);
-        $this->service->store($request->all());
+        $request->validate([
+            'name'    => 'required|string|max:191|unique:sectors,name',
+            'name_it' => 'required|string|max:191|unique:sectors,name_it',
+        ]);
+
+        $this->service->store($request->only(['name', 'name_it', 'status']));
+
         return redirect()->route('admin.sectors.index')->with('success', 'Sector created');
     }
 
@@ -44,8 +47,13 @@ class SectorController extends BaseController
 
     public function update(Request $request, Sector $sector)
     {
-        $request->validate(['name' => 'required|string|max:191']);
-        $this->service->update($sector, $request->all());
+        $request->validate([
+            'name'    => 'required|string|max:191|unique:sectors,name,' . $sector->id,
+            'name_it' => 'required|string|max:191|unique:sectors,name_it,' . $sector->id,
+        ]);
+
+        $this->service->update($sector, $request->only(['name', 'name_it', 'status']));
+
         return redirect()->route('admin.sectors.index')->with('success', 'Sector updated');
     }
 

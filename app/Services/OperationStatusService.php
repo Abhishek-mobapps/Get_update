@@ -7,7 +7,7 @@ class OperationStatusService
 {
     public function paginated($perPage = 10)
     {
-        return OperationStatus::latest()->paginate($perPage);
+        return OperationStatus::latest()->get();
     }
 
     public function create(array $data)

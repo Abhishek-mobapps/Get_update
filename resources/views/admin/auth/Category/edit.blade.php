@@ -10,20 +10,20 @@
                 @method('PUT')
 
                 <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Name (English)</label>
-                        <input type="text" name="name_en" class="form-control form-control-sm" value="{{ old('name_en', $category->name_en) }}" required>
-                        @error('name_en') <small class="text-danger">{{ $message }}</small> @enderror
+                        <input type="text" name="name" class="form-control form-control-sm" value="{{ old('name', $category->name) }}" required>
+                        @error('name') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-4">
                         <label class="form-label">Name (Italic)</label>
-                        <input type="text" name="name_it" class="form-control form-control-sm" value="{{ old('name_it', $category->name_it) }}">
+                        <input type="HIDDEN" name="name_it" class="form-control form-control-sm" value="{{ old('name_it', $category->name_it) }}">
                         @error('name_it') <small class="text-danger">{{ $message }}</small> @enderror
-                    </div>
-                </div>
+                    </div> --}}
+                
 
-                <div class="row mb-3">
-                    <div class="col-md-6">
+                
+                    <div class="col-md-4">
                         <label class="form-label">Status</label>
                         <select name="status" class="form-select form-select-sm">
                             <option value="1" {{ $category->status ? 'selected' : '' }}>Active</option>

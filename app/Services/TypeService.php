@@ -7,7 +7,7 @@ class TypeService
 {
     public function paginated($perPage = 7)
     {
-        return Type::withoutTrashed()->latest()->paginate($perPage);
+        return Type::withoutTrashed()->latest()->get();
     }
 
     public function create(array $data)

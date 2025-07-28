@@ -9,13 +9,18 @@
                 @csrf
                 @method('PUT')
 
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Name</label>
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label">Name (English)</label>
                         <input type="text" name="name" class="form-control form-control-sm" value="{{ old('name', $type->name) }}" required>
                         @error('name') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <label class="form-label">Name (Italic)</label>
+                        <input type="text" name="name_it" class="form-control form-control-sm" value="{{ old('name_it', $type->name_it) }}" required>
+                        @error('name_it') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+                    <div class="col-md-4">
                         <label class="form-label">Status</label>
                         <select name="status" class="form-select form-select-sm">
                             <option value="1" {{ $type->status ? 'selected' : '' }}>Active</option>

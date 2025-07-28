@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
@@ -19,19 +20,23 @@ class OperationStatusController extends BaseController
     public function index()
     {
         $statuses = $this->service->paginated();
-        return view('admin.auth.pages.Operation_Status.index', compact('statuses'));
+        return view('admin.auth.pages.operation_status.index', compact('statuses'));
     }
 
     public function create()
     {
-        return view('admin.auth.pages.Operation_Status.create');
+        return view('admin.auth.pages.operation_status.create');
     }
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|unique:operation_statuses']);
+        $request->validate([
+            'name'    => 'required|string|max:191|unique:operation_statuses,name',
+            'name_it' => 'required|string|max:191|unique:operation_statuses,name_it',
+        ]);
 
-        $this->service->create($request->only(['name', 'status']));
+        $this->service->create($request->only(['name', 'name_it', 'status']));
+
         return redirect()->route('admin.operation-status.index')->with('success', 'Operation status created.');
     }
 
@@ -42,21 +47,25 @@ class OperationStatusController extends BaseController
 
     public function update(Request $request, OperationStatus $operation_status)
     {
-        $request->validate(['name' => 'required|unique:operation_statuses,name,' . $operation_status->id]);
+        $request->validate([
+            'name'    => 'required|string|max:191|unique:operation_statuses,name,' . $operation_status->id,
+            'name_it' => 'required|string|max:191|unique:operation_statuses,name_it,' . $operation_status->id,
+        ]);
 
-        $this->service->update($operation_status, $request->only(['name', 'status']));
-        return redirect()->route('admin.operation-status.index')->with('success', 'Updated.');
+        $this->service->update($operation_status, $request->only(['name', 'name_it', 'status']));
+
+        return redirect()->route('admin.operation-status.index')->with('success', 'Operation status updated.');
     }
 
     public function destroy(OperationStatus $operation_status)
     {
         $this->service->delete($operation_status);
-        return back()->with('success', 'Deleted.');
+        return back()->with('success', 'Operation status deleted.');
     }
 
     public function toggleStatus(OperationStatus $operation_status)
     {
         $this->service->toggleStatus($operation_status);
-        return back()->with('success', 'Status toggled.');
+        return back()->with('success', 'Operation status toggled.');
     }
 }

@@ -10,8 +10,10 @@
     <div class="container mt-4 scrollable-div">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h6>Sector List</h6>
-                <a href="{{ route('admin.sectors.create') }}" class="btn btn-sm btn-success">+ Add</a>
+                <h6>Elenco dei settori
+</h6>
+                <a href="{{ route('admin.sectors.create') }}" class="btn btn-sm btn-success">+ Aggiungi
+</a>
             </div>
 
             <div class="card-body">
@@ -36,13 +38,14 @@
                 @endif
 
 
-                <table class="table table-hover text-center">
+                <table class="table table-bordered table-striped nowrap" id="typeTable" style="width: 100%;">
                     <thead class="table-light">
                         <tr>
-                            <th>Sr No</th>
-                            <th>Name</th>
-                            <th>Created</th>
-                            <th>Actions</th>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Creato a
+</th>
+                            <th>Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,16 +78,16 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-muted">No operation statuses found.</td>
+                                <td colspan="4" class="text-muted">Nessuno stato operativo trovato.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
 
-                <!-- at the bottom of your product index -->
-                <div class="d-flex justify-content-center mt-4">
+                {{-- <!-- at the bottom of your product index -->
+                <!-- <div class="d-flex justify-content-center mt-4">
                     {{ $sectors->links('pagination::bootstrap-5') }}
-                </div>
+                </div> --> --}}
 
             </div>
         </div>

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -10,15 +11,24 @@ class Product extends Model
 
     protected $fillable = [
         'title',
-         'description', 
-         'images','pdf',
-         'value_from','value_to',
-          'buy_sell',
-        'category_id', 'type_id', 'operation_status_id',
-        'reference_code','operation_code','nation_id','region_id','sector_id','type_of_system',
+        'description',
+        'images',
+        'pdf',
+        'value_from',
+        'value_to',
+        'buy_sell',
+        'category_id',
+        'type_id',
+        'operation_status_id',
+        'reference_code',
+        'operation_code',
+        'nation_id',
+        'region_id',
+        'sector_id',
+        'type_of_system',
     ];
-     protected $casts = [
-    'pdf' => 'array',
+    protected $casts = [
+        'pdf' => 'array',
     ];
     // protected $casts = [
     //     'images' => 'array',
@@ -49,7 +59,7 @@ class Product extends Model
         return $this->belongsTo(Region::class);
     }
 
-     public function Sector()
+    public function Sector()
     {
         return $this->belongsTo(Sector::class);
     }

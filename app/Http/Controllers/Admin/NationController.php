@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-// use App\Http\Controllers\Controller;
 use App\Models\Nation;
 use Illuminate\Http\Request;
 use App\Services\NationService;
@@ -20,7 +19,8 @@ class NationController extends BaseController
 
     public function index()
     {
-        return view('admin.auth.pages.nations.index', ['nations' => $this->service->all()]);
+        $nations = $this->service->paginated();
+        return view('admin.auth.pages.nations.index', compact('nations'));
     }
 
     public function create()
@@ -30,8 +30,13 @@ class NationController extends BaseController
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|max:191']);
+        $request->validate([
+            'name'    => 'required|string|max:191|unique:nations,name',
+            'name_it' => 'required|string|max:191|unique:nations,name_it',
+        ]);
+
         $this->service->store($request->all());
+
         return redirect()->route('admin.nations.index')->with('success', 'Nation created');
     }
 
@@ -42,8 +47,13 @@ class NationController extends BaseController
 
     public function update(Request $request, Nation $nation)
     {
-        $request->validate(['name' => 'required|string|max:191']);
+        $request->validate([
+            'name'    => 'required|string|max:191|unique:nations,name,' . $nation->id,
+            'name_it' => 'required|string|max:191|unique:nations,name_it,' . $nation->id,
+        ]);
+
         $this->service->update($nation, $request->all());
+
         return redirect()->route('admin.nations.index')->with('success', 'Nation updated');
     }
 

@@ -2,7 +2,7 @@
 
 @section('content')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <div class="container">
+    <div class="container justify-content-center align-items-start py-5">
         <div class="main-body">
             <div class="row">
                 <div class="col-lg-4">

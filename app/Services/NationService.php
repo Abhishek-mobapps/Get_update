@@ -6,6 +6,12 @@ use App\Models\Nation;
 
 class NationService
 {
+
+     public function paginated($perPage = 7)
+    {
+        return Nation::withoutTrashed()->latest()->get();
+    }
+
     public function all() {
         return Nation::orderBy('name')->get();
     }

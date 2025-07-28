@@ -5,7 +5,7 @@
         <h4 class="mb-4 text-primary">Product List</h4>
 
         <a href="{{ route('admin.products.create') }}" class="btn btn-primary mb-3">+ Add Product</a>
-        <a href="{{ route('admin.productmenu') }}" class="btn btn-primary mb-3">Test Product</a>
+        {{-- <a href="{{ route('admin.productmenu') }}" class="btn btn-primary mb-3">Test Product</a> --}}
 
         @if (session('success'))
             <div class="alert alert-success" id="flash-message">{{ session('success') }}</div>
@@ -15,7 +15,7 @@
         @endif
 
         <div class="table-responsive">
-            <table id="productTable" class="table table-striped align-middle text-center">
+            <table class="table table-bordered table-striped nowrap" id="typeTable" style="width: 100%;">
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>

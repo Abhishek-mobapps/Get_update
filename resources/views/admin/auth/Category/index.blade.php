@@ -24,12 +24,12 @@
                     </script>
                 @endif
 
-                <table class="table table-hover text-center">
+                <table class="table table-bordered table-striped nowrap" id="typeTable" style="width: 100%;">
                     <thead class="table-light">
                         <tr>
                             <th>Sr. No</th>
                             <th>English Name</th>
-                            <th><em>Italic Name</em></th>
+                            {{-- <th>Italic Name</th> --}}
                             <th>Status</th>
                             <th>Created</th>
                             <th>Actions</th>
@@ -39,13 +39,9 @@
                         @forelse ($categories as $index => $category)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                @php
-                                    $name = json_decode($category->name, true);
-                                @endphp
-
-                                <td>{{ $name['en'] ?? '-' }}</td>
-                                <td>{{ $name['it'] ?? '-' }}</td>
-
+                                <td>{{$category->name}}</td>
+                               {{-- <td>{{ json_encode($category) }}</td> --}}
+                               {{-- <td><em>{{$category->name_it}}</em></td> --}}
 
 
 
@@ -87,9 +83,9 @@
                     </tbody>
                 </table>
 
-                <div class="d-flex justify-content-center mt-4">
+                {{-- <div class="d-flex justify-content-center mt-4">
                     {{ $categories->links('pagination::bootstrap-5') }}
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

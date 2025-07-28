@@ -9,10 +9,15 @@ class Type extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'description', 'status'];
+    protected $fillable = ['name', 'name_it' , 'description', 'status'];
 
     public function products()
     {
         return $this->hasMany(Product::class);
     }
+
+    protected $casts = [
+    'name' => 'array',
+];
+
 }

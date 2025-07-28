@@ -8,7 +8,7 @@ class Category extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'description', 'status'];
+    protected $fillable = ['name','name_it' ,'description', 'status'];
 
     public function products()
     {
@@ -19,14 +19,14 @@ class Category extends Model
     'name' => 'array',
 ];
 
-public function getNameEnAttribute()
-{
-    return $this->name['en'] ?? null;
-}
+// public function getNameEnAttribute()
+// {
+//     return $this->name['en'] ?? null;
+// }
 
-public function getNameItAttribute()
-{
-    return $this->name['it'] ?? null;
-}
+// public function getNameItAttribute()
+// {
+//     return $this->name['it'] ?? null;
+// }
 
 }

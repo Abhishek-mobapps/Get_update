@@ -40,7 +40,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Admin Profile
         Route::get('profile', [ProfileController::class, 'index'])->name('user-profiles');
         Route::post('profile/upload', [ProfileController::class, 'uploadImage'])->name('profile.upload');
-
+        Route::get('/admins', [AdminController::class, 'index'])->name('admins.index');
         // Password Change
         Route::get('password', [AdminResetPasswordController::class, 'index'])->name('password.change');
         Route::post('new-password', [AdminResetPasswordController::class, 'updatePassword'])->name('password.update');

@@ -6,6 +6,12 @@ use App\Models\Region;
 
 class RegionService
 {
+
+     public function paginated($perPage = 7)
+    {
+        return Region::withoutTrashed()->latest()->get();
+    }
+
     public function all() {
         return Region::orderBy('name')->get();
     }

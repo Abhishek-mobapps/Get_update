@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Type;
@@ -19,32 +20,40 @@ class TypeController extends BaseController
     public function index()
     {
         $types = $this->typeService->paginated();
-        return view('admin.auth.pages.Type.index', compact('types'));
+        return view('admin.auth.pages.type.index', compact('types'));
     }
 
     public function create()
     {
-        return view('admin.auth.pages.Type.create');
+        return view('admin.auth.pages.type.create');
     }
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|unique:types']);
+        $request->validate([
+            'name'    => 'required|string|max:191|unique:types,name',
+            'name_it' => 'required|string|max:191|unique:types,name_it',
+        ]);
 
-        $this->typeService->create($request->only(['name', 'description', 'status']));
+        $this->typeService->create($request->only(['name', 'name_it', 'description', 'status']));
+
         return redirect()->route('admin.type.index')->with('success', 'Type created.');
     }
 
     public function edit(Type $type)
     {
-        return view('admin.auth.pages.Type.edit', compact('type'));
+        return view('admin.auth.pages.type.edit', compact('type'));
     }
 
     public function update(Request $request, Type $type)
     {
-        $request->validate(['name' => 'required|string|unique:types,name,' . $type->id]);
+        $request->validate([
+            'name'    => 'required|string|max:191|unique:types,name,' . $type->id,
+            'name_it' => 'required|string|max:191|unique:types,name_it,' . $type->id,
+        ]);
 
-        $this->typeService->update($type, $request->only(['name', 'description', 'status']));
+        $this->typeService->update($type, $request->only(['name', 'name_it', 'description', 'status']));
+
         return redirect()->route('admin.type.index')->with('success', 'Type updated.');
     }
 

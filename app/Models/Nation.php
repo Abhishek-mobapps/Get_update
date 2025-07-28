@@ -8,7 +8,7 @@ class Nation extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'is_active'];
+    protected $fillable = ['name', 'name_it' ,'is_active'];
 
     public function products()
     {

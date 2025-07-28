@@ -31,71 +31,52 @@ class CategoryController extends BaseController
     public function store(Request $request)
     {
         $request->validate([
-            'name_en' => 'required|string|max:255',
-            'name_it' => 'nullable|string|max:255',
-            'status' => 'required|boolean',
+            'name'    => 'required|string|unique:categories,name',
+            'name_it' => 'required|string|unique:categories,name_it',
         ]);
 
-        $data = [
-            'name' => json_encode([
-                'en' => $request->input('name_en'),
-                'it' => $request->input('name_it'),
-            ]),
-            'status' => $request->input('status'),
-        ];
+        $this->categoryService->create(
+            $request->only(['name', 'name_it', 'description', 'status'])
+        );
 
-        $this->categoryService->create($data);
-
-        return redirect()->route('admin.category.index')->with('success', 'Category created successfully.');
+        return redirect()->route('admin.category.index')->with('success', 'Category created.');
     }
 
     public function edit(Category $category)
     {
-        $decodedName = json_decode($category->name, true);
-
-        // Default empty if keys are missing
-        $category->name_en = $decodedName['en'] ?? '';
-        $category->name_it = $decodedName['it'] ?? '';
-
         return view('admin.auth.Category.edit', compact('category'));
     }
 
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name_en' => 'required|string|max:255',
-            'name_it' => 'nullable|string|max:255',
-            'status' => 'required|boolean',
+            'name' => 'required|string|unique:categories,name,' . $category->id,
+            'name_it' => 'required|string|unique:categories,name_it,' . $category->id,
         ]);
 
-        $data = [
-            'name' => json_encode([
-                'en' => $request->input('name_en'),
-                'it' => $request->input('name_italic'),
-            ]),
-            'status' => $request->input('status'),
-        ];
+        $this->categoryService->update(
+            $category,
+            $request->only(['name', 'name_it', 'description', 'status'])
+        );
 
-        $this->categoryService->update($category, $data);
-
-        return redirect()->route('admin.category.index')->with('success', 'Category updated successfully.');
+        return redirect()->route('admin.category.index')->with('success', 'Category updated.');
     }
 
     public function destroy(Category $category)
     {
         $this->categoryService->delete($category);
-        return back()->with('success', 'Category deleted successfully.');
+        return back()->with('success', 'Category deleted.');
     }
 
     public function restore($id)
     {
         $this->categoryService->restore($id);
-        return back()->with('success', 'Category restored successfully.');
+        return back()->with('success', 'Category restored.');
     }
 
     public function toggleStatus(Category $category)
     {
         $this->categoryService->toggleStatus($category);
-        return back()->with('success', 'Category status updated successfully.');
+        return back()->with('success', 'Category status updated.');
     }
 }

@@ -36,11 +36,12 @@
                 @endif
 
 
-                <table class="table table-hover text-center">
+                <table class="table table-bordered table-striped nowrap" id="typeTable" style="width: 100%;">
                     <thead class="table-light">
                         <tr>
-                            <th>Sr No</th>
-                            <th>Name</th>
+                            <th>Sr.No</th>
+                            <th>Name (English)</th>
+                            <th>Name (Italic)</th>
                             <th>Status</th>
                             <th>Created</th>
                             <th>Actions</th>
@@ -49,8 +50,9 @@
                     <tbody>
                         @forelse($statuses as $index=>$status)
                             <tr>
-                                <td>{{$index+1}}</td>
+                                <td>{{ $index + 1 }}</td>
                                 <td>{{ $status->name }}</td>
+                                <td>{{$status->name_it}}</td>
                                 <td>
                                     <form method="POST"
                                         action="{{ route('admin.operation-status.toggleStatus', $status) }}">
@@ -93,9 +95,9 @@
                 </table>
 
                 <!-- at the bottom of your product index -->
-                <div class="d-flex justify-content-center mt-4">
+                {{-- <div class="d-flex justify-content-center mt-4">
                     {{ $statuses->links('pagination::bootstrap-5') }}
-                </div>
+                </div> --}}
 
             </div>
         </div>

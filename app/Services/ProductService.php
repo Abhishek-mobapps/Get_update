@@ -8,8 +8,9 @@ class ProductService
     public function paginated($perPage = 7)
     {
         return Product::with(['category', 'type', 'operationStatus'])
+                     ->withoutTrashed()
                      ->latest()
-                     ->paginate($perPage);
+                     ->get();
     }
     public function create(array $data)
     {

@@ -5,7 +5,7 @@
         <h4 class="mb-4 text-primary">Product List</h4>
 
         <a href="{{ route('admin.products.create') }}" class="btn btn-primary mb-3">+ Add Product</a>
-        {{-- <a href="{{ route('admin.productmenu') }}" class="btn btn-primary mb-3">Test Product</a> --}}
+        <a href="{{ route('users.index') }}" class="btn btn-primary mb-3">See User</a>
 
         @if (session('success'))
             <div class="alert alert-success" id="flash-message">{{ session('success') }}</div>
@@ -45,7 +45,7 @@
                                 </div>
                             </td>
                             {{-- <td>{{ $product->category->name_en ?? '-' }}</td> --}}
-                            <td>{{ $product->category->name['it'] ?? 'N/A' }}</td>
+                            <td>{{ $product->category->name}}</td>
 
                             
                             <td>

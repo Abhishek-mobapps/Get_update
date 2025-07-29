@@ -38,6 +38,6 @@ class AdminUserController extends Controller
 
         Mail::to($user->email)->send(new UserCredentials($user, $request->password));
 
-        return redirect()->route('admin.users.index')->with('success', 'User password updated and email sent.');
+        return redirect()->route('users.index')->with('success', 'User password updated and email sent.');
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
 <div style="padding: 25%; background: #d1b382; min-height: 100vh;">
 
-    <form method="GET" action="{{ route('products.index') }}" style="background:#000; padding:15px; border-radius:8px; display:flex; gap:15px; flex-wrap: wrap; justify-content:center; margin-bottom:20px;">
+    <form method="GET" action="{{ route('admin.products.index') }}" style="background:#000; padding:15px; border-radius:8px; display:flex; gap:15px; flex-wrap: wrap; justify-content:center; margin-bottom:20px;">
         <select name="category_id" onchange="this.form.submit()" style="padding:8px; border-radius:4px;">
             <option value="">All Categories</option>
             @foreach($categories as $category)

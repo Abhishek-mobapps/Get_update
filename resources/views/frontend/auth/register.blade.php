@@ -99,19 +99,19 @@
                                     </div>
 
                                     <!-- Passwords -->
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <div class="field-set tg-contact-input">
                                             <label>Password</label>
-                                            <input type="password" name="password" required />
+                                            <input type="hidden" name="password"  />
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="field-set tg-contact-input">
                                             <label>Confirm Password</label>
-                                            <input type="password" name="password_confirmation" required />
+                                            <input type="hidden" name="password_confirmation"  />
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <!-- Hidden Subscription Type -->
                                     <input type="hidden" name="subscription_type" id="subscription_type" required>

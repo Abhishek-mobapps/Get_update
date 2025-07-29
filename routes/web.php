@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-// use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminResetPasswordController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
@@ -99,7 +99,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             'category' => CategoryController::class,
         ]);
 
-        Route::get('/products', [ProductController::class, 'productmenu'])->name('user.products');
+        // Route::get('/products', [ProductController::class, 'productmenu'])->name('user.products');
 
         // Product Listing & View
         Route::get('product-listing', [ProductController::class, 'productmenu'])->name('productmenu');
@@ -135,8 +135,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 //  ---------------------------------------------------
 
 use App\Http\Controllers\Frontend\AuthController;
-
-Route::get('/', [AuthController::class, 'showLoginForm'])->name('userlogin');
+Route::get('/',function(){
+    return view('frontend.auth.index');
+});
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('userlogin');
 Route::post('/userlogin', [AuthController::class, 'login'])->name('login.submit');
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('userregister');
@@ -153,9 +155,8 @@ Route::middleware(['userauth'])->group(function () {
 
 
 
-// Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-//     Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
-//     Route::get('/users/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.users.edit');
-//     // add update route for password reset form submission
-// });
+use App\Http\Controllers\Admin\AdminUserController;
 
+Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+Route::get('/users/{id}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{id}', [AdminUserController::class, 'update'])->name('users.update');

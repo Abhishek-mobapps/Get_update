@@ -299,28 +299,53 @@ class ProductController extends BaseController
     }
 
 
+    // public function productmenu(Request $request)
+    // {
+    //     $products = Product::query()
+    //         ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
+    //         ->when($request->type_id, fn($q) => $q->where('type_id', $request->type_id))
+    //         ->when($request->buy_sell, fn($q) => $q->where('buy_sell', $request->buy_sell))
+    //         ->when($request->operation_status_id, fn($q) => $q->where('operation_status_id', $request->operation_status_id))
+    //         ->whereHas('category', fn($q) => $q->where('status', 'active'))
+    //         ->whereHas('type', fn($q) => $q->where('status', 'active'))
+    //         ->whereHas('operationStatus', fn($q) => $q->where('status', 'active'))
+    //         ->latest()
+    //         ->paginate(9);
+
+    //     if ($request->ajax()) {
+    //         return view('home', compact('products'))->render();
+    //     }
+
+    //     return view('home', [
+    //         'products'   => $products,
+    //         'categories' => Category::where('status', 'active')->get(),
+    //         'types'      => Type::where('status', 'active')->get(),
+    //         'statuses'   => OperationStatus::where('status', 'active')->get(),
+    //     ]);
+    // }
+
     public function productmenu(Request $request)
-    {
-        $products = Product::query()
-            ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
-            ->when($request->type_id, fn($q) => $q->where('type_id', $request->type_id))
-            ->when($request->buy_sell, fn($q) => $q->where('buy_sell', $request->buy_sell))
-            ->when($request->operation_status_id, fn($q) => $q->where('operation_status_id', $request->operation_status_id))
-            ->whereHas('category', fn($q) => $q->where('status', 'active'))
-            ->whereHas('type', fn($q) => $q->where('status', 'active'))
-            ->whereHas('operationStatus', fn($q) => $q->where('status', 'active'))
-            ->latest()
-            ->paginate(9);
+{
+    $products = Product::query()
+        ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
+        ->when($request->type_id, fn($q) => $q->where('type_id', $request->type_id))
+        ->when($request->buy_sell, fn($q) => $q->where('buy_sell', $request->buy_sell))
+        ->when($request->operation_status_id, fn($q) => $q->where('operation_status_id', $request->operation_status_id))
+        ->whereHas('category', fn($q) => $q->where('status', 'active'))
+        ->whereHas('type', fn($q) => $q->where('status', 'active'))
+        ->whereHas('operationStatus', fn($q) => $q->where('status', 'active'))
+        ->latest()
+        ->paginate(9);
 
-        if ($request->ajax()) {
-            return view('home', compact('products'))->render();
-        }
-
-        return view('home', [
-            'products'   => $products,
-            'categories' => Category::where('status', 'active')->get(),
-            'types'      => Type::where('status', 'active')->get(),
-            'statuses'   => OperationStatus::where('status', 'active')->get(),
-        ]);
+    if ($request->ajax()) {
+        return view('frontend.auth.dashboard', compact('products'))->render();
     }
+
+    return view('frontend.auth.dashboard', [
+        'products'   => $products,
+        'categories' => Category::where('status', 'active')->get(),
+        'types'      => Type::where('status', 'active')->get(),
+        'statuses'   => OperationStatus::where('status', 'active')->get(),
+    ]);
+}
 }

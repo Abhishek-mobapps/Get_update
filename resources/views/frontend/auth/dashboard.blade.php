@@ -6,13 +6,13 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>GED Intermedia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{asset('assets/asset/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/asset/css/magnific-popup.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/asset/css/fontawesome-all.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/asset/css/swiper-bundle.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/asset/css/animate.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/asset/css/default-spacing.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/asset/css/main.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/asset/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/asset/css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/asset/css/fontawesome-all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/asset/css/swiper-bundle.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/asset/css/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/asset/css/default-spacing.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/asset/css/main.css') }}">
 </head>
 
 <body class="tgbg-black">
@@ -47,7 +47,8 @@
                     <div class="col-xl-3 col-3">
                         <div class="tg-header-logo">
                             <a class="logo-1" href="#!"><img src="assets/asset/img/logo.jpeg" alt="logo"></a>
-                            <a class="d-none logo-2" href="#!"><img src="assets/asset/img/logo.jpeg" alt="logo"></a>
+                            <a class="d-none logo-2" href="#!"><img src="assets/asset/img/logo.jpeg"
+                                    alt="logo"></a>
                         </div>
                     </div>
                     <div class="col-lg-6 col-6 d-none d-xl-block">
@@ -103,15 +104,15 @@
                     <div class="col-xl-3 col-3">
                         <div class="tg-header-right tg-header-4-right d-flex align-items-center justify-content-end">
                             <div class="tg-header-btn ml-15 d-none d-sm-inline-block">
-                                <a class="tg-btn tg-btn-primary tg-btn-hover" href="{{route('reserved')}}">
+                                <a class="tg-btn tg-btn-primary tg-btn-hover" href="{{ route('reserved') }}">
                                     <span class="hover-effect">
                                         <span class="effect-1">Reserved Area</span>
                                         <span class="effect-1">Reserved Area</span>
                                     </span>
                                 </a>
                             </div>
-                             <div class="tg-header-btn ml-15 d-none d-sm-inline-block">
-                                <a class="tg-btn tg-btn-primary tg-btn-hover" href="{{route('userlogout')}}">
+                            <div class="tg-header-btn ml-15 d-none d-sm-inline-block">
+                                <a class="tg-btn tg-btn-primary tg-btn-hover" href="{{ route('userlogout') }}">
                                     <span class="hover-effect">
                                         <span class="effect-1">Logout</span>
                                         <span class="effect-1">Logout</span>
@@ -179,7 +180,8 @@
                 <button><i class="fa-sharp fa-regular fa-xmark"></i></button>
             </div>
             <div class="offCanvas__logo text-center mb-50">
-                <a class="mb-40 d-block" href="#!"><img data-width="127" src="assets/asset/img/logo.jpeg" alt="logo"></a>
+                <a class="mb-40 d-block" href="#!"><img data-width="127" src="assets/asset/img/logo.jpeg"
+                        alt="logo"></a>
                 <p>Businorem ipsum dolor sit amet cons interdum quam duis variuy time honored tradition etting .</p>
             </div>
             <div class="offcanvas-gallery mb-60">
@@ -243,51 +245,52 @@
                                     <div class="col-md-3">
                                         <div class="filter-main">
                                             <label>All Categories</label>
-                                            <select class="form-control">
-                                                <option>All categories</option>
-                                                <option>Agricultural Company</option>
-                                                <option>Companies for Sale</option>
-                                                <option>Company Shares/Stocks for Sale</option>
-                                                <option>Dairy</option>
-                                                <option>Collectibles</option>
+                                            <select name="category_id" id="categoryFilter" class="form-control">
+                                                <option value="">All Categories</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
                                             </select>
+
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="filter-main">
                                             <label>All Types</label>
-                                            <select class="form-control">
-                                                <option>All Types</option>
-                                                <option>Agricultural Company</option>
-                                                <option>Companies for Sale</option>
-                                                <option>Company Shares/Stocks for Sale</option>
-                                                <option>Dairy</option>
-                                                <option>Collectibles</option>
+                                            <select name="type_id" class="form-control">
+                                                <option value="">All Types</option>
+                                                @foreach ($types as $type)
+                                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                                @endforeach
                                             </select>
+
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="filter-main">
                                             <label>Buy/Sell</label>
-                                            <select class="form-control">
-                                                <option>Buy/Sell</option>
-                                                <option>Agricultural Company</option>
-                                                <option>Companies for Sale</option>
-                                                <option>Company Shares/Stocks for Sale</option>
-                                                <option>Dairy</option>
-                                                <option>Collectibles</option>
+                                            <select name="buy_sell" class="form-control">
+                                                <option value="">Buy/Sell</option>
+                                                <option value="buy"
+                                                    {{ request('buy_sell') == 'buy' ? 'selected' : '' }}>Buy</option>
+                                                <option value="sell"
+                                                    {{ request('buy_sell') == 'sell' ? 'selected' : '' }}>Sell</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="filter-main">
                                             <label>Operation Status</label>
-                                            <select class="form-control">
-                                                <option>Operation Status</option>
-                                                <option>Open</option>
-                                                <option>Is Closing</option>
-                                                <option>Closed</option>
+                                            <select name="operation_status_id" class="form-control">
+                                                <option value="">Operation Status</option>
+                                                @foreach ($statuses as $status)
+                                                    <option value="{{ $status->id }}"
+                                                        {{ request('operation_status_id') == $status->id ? 'selected' : '' }}>
+                                                        {{ $status->name }}
+                                                    </option>
+                                                @endforeach
                                             </select>
+
                                         </div>
                                     </div>
                                 </div>
@@ -299,112 +302,126 @@
         </div>
         <!--==============================hero-area-end==============================-->
         <!-- section-start -->
-        <section class="top-padding card-sec-main">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 mb-4">
-                        <div class="card dash-card">
-                            <div class="position-relative">
-                                <div class="card-img image_item">
-                                    <img src="assets/asset/img/bg-2.jpg" />
-                                    <div class="hover">
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </button>
-                                    </div>
 
-                                </div>
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModal" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header hdr-part">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">View Details</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="view-main">
-                                                    <h5>Renewable energy plant license sale</h5>
-                                                    <p>An Italian PropTech platform created to digitize the real estate
-                                                        buying and selling process. Its core is an AI-based real estate
-                                                        appraiser that has already generated over 220,000 valuations.
-                                                        Solutions offered:</p>
+        <section class="top-padding card-sec-main">
+            @foreach ($products as $product)
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+
+                            <div class="card dash-card">
+                                <div class="position-relative">
+                                    <div class="card-img image_item">
+                                        @php
+                                            $images = json_decode($product->images ?? '[]');
+                                        @endphp
+
+                                        <img src="{{ asset('uploads/products/' . ($images[0] ?? 'default.jpg')) }}"
+                                            class="w-100" />
+                                        <div class="hover">
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header hdr-part">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">View Details
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="view-main">
+                                                        <h5>Renewable energy plant license sale</h5>
+                                                        <p>An Italian PropTech platform created to digitize the real
+                                                            estate
+                                                            buying and selling process. Its core is an AI-based real
+                                                            estate
+                                                            appraiser that has already generated over 220,000
+                                                            valuations.
+                                                            Solutions offered:</p>
                                                         <ul>
                                                             <li>Free real estate appraisals.</li>
                                                             <li>Lead marketplace.</li>
                                                             <li>Integrated CRM for agencies.</li>
                                                             <li>Real estate reports, chatbots, and upselling tools.</li>
                                                         </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="top-cont">
+                                        <span class="badge text-bg-dark">Renewable energy plant license sale</span>
+                                    </div>
                                 </div>
-                                <div class="top-cont">
-                                    <span class="badge text-bg-dark">Renewable energy plant license sale</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table card-table">
-                                        <tbody>
-                                            <tr>
-                                                <td class="first-child">Operation code</td>
-                                                <td class="last-child">Ref. 202507150921</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="first-child">Nation</td>
-                                                <td class="last-child">Italy</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="first-child">Region</td>
-                                                <td class="last-child">Puglia</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="first-child">Sector</td>
-                                                <td class="last-child">Renewable Energy</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="first-child">System type</td>
-                                                <td class="last-child">Sale of Licenses plus Land</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="first-child">Operation Type</td>
-                                                <td class="last-child">Sale of renewable energy systems</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="first-child">Value</td>
-                                                <td class="last-child">Confidential Negotiation</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="">
-                                    <button type="button" class="tg-btn-two request-btn" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal1">Request Information</button>
-                                </div>
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModal1" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-body">
-                                                <div class="bdy-part">
-                                                    <div class="">
-                                                        <p>Request information for Ref. 202507131714 – Biomethane
-                                                            Operation
-                                                            Alessandria (Piedmont)</p>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table card-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="first-child">Operation code</td>
+                                                    <td class="last-child">{{ $product->operation_code }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="first-child">Nation</td>
+                                                    <td class="last-child">{{ $product->nation->name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="first-child">Region</td>
+                                                    <td class="last-child">{{ $product->region->name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="first-child">Sector</td>
+                                                    <td class="last-child">{{ $product->sector->name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="first-child">System type</td>
+                                                    <td class="last-child">{{ $product->type_of_system }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="first-child">Operation Type</td>
+                                                    <td class="last-child">{{ $product->type_of_operation }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="first-child">Value</td>
+                                                    <td class="last-child">{{ $product->value_from }} -
+                                                        {{ $product->value_from }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="">
+                                        <button type="button" class="tg-btn-two request-btn" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal1">Request Information</button>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal1" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="bdy-part">
+                                                        <div class="">
+                                                            <p>Request information for Ref. 202507131714 – Biomethane
+                                                                Operation
+                                                                Alessandria (Piedmont)</p>
+                                                        </div>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="text-center">
-                                                    <button type="submit" class="tg-btn-two send-req">Request
-                                                        Sending</button>
+                                                    <div class="text-center">
+                                                        <button type="submit" class="tg-btn-two send-req">Request
+                                                            Sending</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -414,7 +431,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
+
+            <center>@if ($products->isEmpty())
+                <p>No products match your filters.</p>
+            @endif</center>
         </section>
         <!-- section-end -->
     </main>
@@ -485,18 +506,18 @@
     </footer>
     <!--==============================footer-area-end==============================-->
     <!--==============================JS here==============================-->
-    <script src="{{asset('assets/asset/js/vendor/jquery.js')}}"></script>
-    <script src="{{asset('assets/asset/js/bootstrap.min.js')}}"></script>
-    <script src="{{('assets/asset/js/imagesloaded.pkgd.min.js')}}"></script>
-    <script src="{{asset('assets/asset/js/counter.js')}}"></script>
-    <script src="{{asset('assets/asset/js/jquery-appear.js')}}"></script>
-    <script src="{{asset('assets/asset/js/jquery.magnific-popup.min.js')}}"></script>
-    <script src="{{asset('assets/asset/js/swiper-bundle.min.js')}}"></script>
-    <script src="{{asset('assets/asset/js/jarallax.js')}}"></script>
-    <script src="{{asset('assets/asset/js/nice-select.js')}}"></script>
-    <script src="{{asset('assets/asset/js/ajax-form.js')}}"></script>
-    <script src="{{asset('assets/asset/js/wow.js')}}"></script>
-    <script src="{{asset('assets/asset/js/main.js')}}"></script>
+    <script src="{{ asset('assets/asset/js/vendor/jquery.js') }}"></script>
+    <script src="{{ asset('assets/asset/js/bootstrap.min.js') }}"></script>
+    <script src="{{ 'assets/asset/js/imagesloaded.pkgd.min.js' }}"></script>
+    <script src="{{ asset('assets/asset/js/counter.js') }}"></script>
+    <script src="{{ asset('assets/asset/js/jquery-appear.js') }}"></script>
+    <script src="{{ asset('assets/asset/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('assets/asset/js/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/asset/js/jarallax.js') }}"></script>
+    <script src="{{ asset('assets/asset/js/nice-select.js') }}"></script>
+    <script src="{{ asset('assets/asset/js/ajax-form.js') }}"></script>
+    <script src="{{ asset('assets/asset/js/wow.js') }}"></script>
+    <script src="{{ asset('assets/asset/js/main.js') }}"></script>
 </body>
 
 </html>

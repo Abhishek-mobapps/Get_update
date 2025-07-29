@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('admin.auth.dashboard')
 
 @section('content')
 <h1>Users List</h1>
@@ -25,7 +25,7 @@
             <td>{{ $user->email }}</td>
             <td>{{ ucfirst($user->subscription_type) }}</td>
             <td>
-                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary btn-sm">Set / Reset Password</a>
+                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary btn-sm">Set / Reset Password</a>
             </td>
         </tr>
         @endforeach

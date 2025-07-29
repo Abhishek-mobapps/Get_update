@@ -12,8 +12,9 @@ use App\Http\Controllers\Admin\SectorController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OperationStatusController;
+// use App\Http\Controllers\Admin\AdminUserController;
 
-Route::get('/',function(){
+Route::get('/', function () {
     return view('index');
 });
 Route::get('login', function () {
@@ -81,6 +82,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             'category' => CategoryController::class,
         ]);
 
+
+
+
+
+
+
+
         // Product Extras
         Route::get('product-listing', [ProductController::class, 'productmenu'])->name('productmenu');
         Route::get('products/{id}', [ProductController::class, 'show'])->name('products.show');
@@ -103,3 +111,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 //         return "Error creating storage link: " . $e->getMessage();
 //     }
 // });
+// use App\Http\Controllers\Admin\AdminUserController;
+
+
+use App\Http\Controllers\Admin\AdminUserController;
+
+Route::get('/', [AdminUserController::class, 'index'])->name('users.index');
+Route::get('/users/{id}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{id}', [AdminUserController::class, 'update'])->name('users.update');

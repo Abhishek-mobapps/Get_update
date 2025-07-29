@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('admin.auth.dashboard')
 
 @section('content')
 <h1>Set Password for {{ $user->name }}</h1>
@@ -13,7 +13,7 @@
 </div>
 @endif
 
-<form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+<form action="{{ route('users.update', $user->id) }}" method="POST">
     @csrf
     @method('PUT')
 
@@ -28,6 +28,6 @@
     </div>
 
     <button type="submit" class="btn btn-success">Update Password & Send Email</button>
-    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Back to List</a>
+    <a href="{{ route('users.index') }}" class="btn btn-secondary">Back to List</a>
 </form>
 @endsection

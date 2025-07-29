@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+
 use App\Models\AdminActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,7 @@ class AdminAuthController extends Controller
 {
 
     public function index(){
-         $admins = Admin::orderBy('created_at', 'desc')->paginate(10);
+           $admins = Admin::orderBy('created_at', 'desc')->paginate(10);
            return view('admin.admins.index', compact('admins'));
     }
     public function showRegisterForm()

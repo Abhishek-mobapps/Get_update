@@ -1,0 +1,15 @@
+@php
+    $user = auth()->user();
+@endphp
+
+@if ($user)
+    <h2>Welcome, {{ $user->name }}</h2>
+    <p>This is your dashboard.</p>
+    <form action="{{ route('userlogout') }}" method="POST">
+        @csrf
+        <button type="submit">Logout</button>
+    </form>
+@else
+    <p>You must be logged in to view the dashboard.</p>
+    <a href="{{ route('userlogin') }}">Go to Login</a>
+@endif
